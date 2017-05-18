@@ -1,0 +1,26 @@
+package de.buffalodan.ci.network;
+
+import java.util.ArrayList;
+
+public class Neuron {
+	
+	private double input;
+	private double output;
+	
+	/**
+	 * All connections from producers (Layer before)
+	 */
+	private ArrayList<Connection> producerConnections;
+	
+	/**
+	 * All connections to consumers (Layer after)
+	 */
+	private ArrayList<Connection> consumerConnections;
+	
+	public enum Type {
+		INPUT,
+		OUTPUT,
+		HIDDEN;
+	}
+
+}

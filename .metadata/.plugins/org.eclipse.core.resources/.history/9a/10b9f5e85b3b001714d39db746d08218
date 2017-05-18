@@ -1,0 +1,24 @@
+package de.buffalodan.ci.network;
+
+import java.util.ArrayList;
+
+public class Layer {
+
+	private ArrayList<Neuron> neurons;
+	private double bias;
+	
+	public Layer(ArrayList<Neuron> neurons, double bias) {
+		super();
+		this.neurons = neurons;
+		this.bias = bias;
+	}
+	
+	public void pullAndProduce() {
+		for (Neuron neuron : neurons) {
+			neuron.pull();
+			neuron.consume(bias);
+			neuron.produce();
+		}
+	}
+	
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.util.function.Function"/>
+<fullyQualifiedTypeName name="java.util.stream.Collectors"/>
+<fullyQualifiedTypeName name="java.util.Random"/>
+<fullyQualifiedTypeName name="de.buffalodan.ci.network.Connection"/>
+<fullyQualifiedTypeName name="de.buffalodan.ci.network.Neuron.Type"/>
+<fullyQualifiedTypeName name="de.buffalodan.ci.network.ActivationFunction"/>
+<fullyQualifiedTypeName name="de.buffalodan.ci.network.Layer"/>
+<fullyQualifiedTypeName name="de.buffalodan.ci.network.FFNetwork"/>
+<fullyQualifiedTypeName name="org.jfree.data.xy.DefaultXYDataset"/>
+<fullyQualifiedTypeName name="org.jfree.chart.JFreeChart"/>
+<fullyQualifiedTypeName name="org.jfree.chart.ChartFrame"/>
+<fullyQualifiedTypeName name="org.jfree.chart.ChartFactory"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="de.buffalodan.ci.network.Neuron"/>
+<fullyQualifiedTypeName name="de.buffalodan.ci.network.Network"/>
+</qualifiedTypeNameHistroy>
