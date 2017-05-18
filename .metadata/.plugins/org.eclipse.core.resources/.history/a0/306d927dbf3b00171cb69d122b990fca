@@ -119,7 +119,7 @@ public class FFNetwork {
 			for (Neuron n : layer.getNeurons()) {
 				int ni2 = 0;
 				for (Neuron n2 : next.getNeurons()) {
-					double weight = r.nextDouble() - 0.5; //testWeights[j];
+					double weight = testWeights[j]; // r.nextDouble() - 0.5;
 					Connection connection = new Connection(n, n2, weight);
 					n.addConsumerConnection(connection);
 					n2.addProducerConnection(connection);
@@ -180,7 +180,7 @@ public class FFNetwork {
 
 		FFNetwork network = new FFNetwork(layers);
 		
-		int runs = 1;
+		int runs = 10;
 		double[][] yWerteNetwork = new double[runs][sampleRate + 1];
 		double[] errors = new double[sampleRate+1];
 		double step = 20d / sampleRate;
@@ -199,8 +199,8 @@ public class FFNetwork {
 				// o:"+output);
 				yWerteNetwork[j][i] = output;
 
-				//network.hardcodeBackpropagateOutput(yWerte[i]);
-				network.hardcodeBackpropagateOutputAndHidden(yWerte[i]);
+				network.hardcodeBackpropagateOutput(yWerte[i]);
+				//network.hardcodeBackpropagateOutputAndHidden(yWerte[i]);
 				double error = network.calculateError(yWerte[i]);
 				errors[i] = error;
 				errorTotal += error;
