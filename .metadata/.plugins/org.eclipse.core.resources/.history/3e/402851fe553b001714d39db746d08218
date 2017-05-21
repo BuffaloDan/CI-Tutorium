@@ -1,5 +1,0 @@
-package de.buffalodan.ci.network;
-
-public interface ActivationFunction {
-
-}
