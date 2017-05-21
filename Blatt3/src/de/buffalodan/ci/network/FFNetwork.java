@@ -65,12 +65,10 @@ public class FFNetwork {
 			connection.setNewWeight(connection.getWeight() - LEARNING_RATE * dw);
 		}
 		// Okay, das ist jetzt was hässlich geworden :(
-		double out = outN.getOutput();
 		for (Neuron nh : layers.get(1).getNeurons()) {
 			// Connection zum Input
 			Connection c2 = nh.getProducerConnections().get(0);
 			Neuron consumer = c2.getN2();
-			double consumerOut = consumer.getOutput();
 			double producerOut = c2.getN1().getOutput();
 			double dconsumer = consumer.getActivationFunction().dcalculate(consumer.getInput());
 			
@@ -78,7 +76,6 @@ public class FFNetwork {
 			Connection c = nh.getConsumerConnections().get(0);
 			Neuron oconsumer = c.getN2();
 			double oconsumerOut = consumer.getOutput();
-			double oproducerOut = c.getN1().getOutput();
 			double odconsumer = oconsumer.getActivationFunction().dcalculate(oconsumer.getInput());
 			double odeltaOut = (oconsumerOut-expected) * odconsumer;
 			
@@ -106,31 +103,21 @@ public class FFNetwork {
 		}
 	}
 
-	private double[] testWeights = { -0.5, 0.3, 0.2, -0.3, 0.3, -0.1, 0.2, 0.2, -0.4, -0.4, -0.1, 0.4, 0.3, 0.4, -0.2,
-			0.5, 0.1, -0.2, 0.4, -0.4 };
+	/*private double[] testWeights = { -0.5, 0.3, 0.2, -0.3, 0.3, -0.1, 0.2, 0.2, -0.4, -0.4, -0.1, 0.4, 0.3, 0.4, -0.2,
+			0.5, 0.1, -0.2, 0.4, -0.4 };*/
 
 	private void buildConnections() {
 		Random r = new Random(System.currentTimeMillis());
-		int j = 0;
 		for (int i = 0; i < layers.size() - 1; i++) {
 			Layer layer = layers.get(i);
 			Layer next = layers.get(i + 1);
-			int ni = 0;
 			for (Neuron n : layer.getNeurons()) {
-				int ni2 = 0;
 				for (Neuron n2 : next.getNeurons()) {
 					double weight = r.nextDouble() - 0.5; //testWeights[j];
 					Connection connection = new Connection(n, n2, weight);
 					n.addConsumerConnection(connection);
 					n2.addProducerConnection(connection);
-
-					// System.out.println("Added Connection between L" + i + "N"
-					// + ni + " and L" + (i + 1) + "N" + ni2
-					// + " with weight " + weight);
-					ni2++;
-					j++;
 				}
-				ni++;
 			}
 		}
 		System.out.println();
