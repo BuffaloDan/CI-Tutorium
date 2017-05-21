@@ -6,22 +6,22 @@ package de.buffalodan.ci.network;
  */
 public class Connection {
 
-	private Neuron n1;
-	private Neuron n2;
+	private Neuron producer;
+	private Neuron consumer;
 	private double weight;
 	private double newWeight = 0;
 
 	/**
 	 * N1 ist das Neuron, das seinen Output an N2 schickt und nie andersrum!
 	 * N1 --> N2
-	 * @param n1 Producer-Neuron
-	 * @param n2 Consumer-Neuron
+	 * @param producer Producer-Neuron
+	 * @param consumer Consumer-Neuron
 	 * @param weight 
 	 */
-	public Connection(Neuron n1, Neuron n2, double weight) {
+	public Connection(Neuron producer, Neuron consumer, double weight) {
 		super();
-		this.n1 = n1;
-		this.n2 = n2;
+		this.producer = producer;
+		this.consumer = consumer;
 		this.weight = weight;
 		newWeight = weight;
 	}
@@ -35,12 +35,12 @@ public class Connection {
 		return weight;
 	}
 
-	public Neuron getN1() {
-		return n1;
+	public Neuron getProducer() {
+		return producer;
 	}
 
-	public Neuron getN2() {
-		return n2;
+	public Neuron getConsumer() {
+		return consumer;
 	}
 	
 	public void setNewWeight(double newWeight) {

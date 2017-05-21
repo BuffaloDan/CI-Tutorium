@@ -54,7 +54,7 @@ public class Neuron {
 			// do nothing
 		} else {
 			for (Connection c : producerConnections) {
-				Neuron producer = c.getN1();
+				Neuron producer = c.getProducer();
 				double consume = producer.getOutput() * c.getWeight();
 				// System.out.print(consume+"+");
 				consume(consume);

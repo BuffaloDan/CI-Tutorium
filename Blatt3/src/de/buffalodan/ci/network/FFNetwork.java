@@ -32,9 +32,9 @@ public class FFNetwork {
 		Neuron outN = layers.get(2).getNeurons().get(0);
 		ArrayList<Connection> cs = outN.getProducerConnections();
 		for (Connection connection : cs) {
-			Neuron consumer = connection.getN2();
+			Neuron consumer = connection.getConsumer();
 			double consumerOut = consumer.getOutput();
-			double producerOut = connection.getN1().getOutput();
+			double producerOut = connection.getProducer().getOutput();
 			double dconsumer = consumer.getActivationFunction().dcalculate(consumer.getInput());
 			double dw = (consumerOut-expected) * dconsumer * producerOut;
 			connection.setNewWeight(connection.getWeight() - LEARNING_RATE * dw);
@@ -56,9 +56,9 @@ public class FFNetwork {
 		Neuron outN = layers.get(2).getNeurons().get(0);
 		ArrayList<Connection> cs = outN.getProducerConnections();
 		for (Connection connection : cs) {
-			Neuron consumer = connection.getN2();
+			Neuron consumer = connection.getConsumer();
 			double consumerOut = consumer.getOutput();
-			double producerOut = connection.getN1().getOutput();
+			double producerOut = connection.getProducer().getOutput();
 			double dconsumer = consumer.getActivationFunction().dcalculate(consumer.getInput());
 			double deltaOut = (consumerOut-expected) * dconsumer;
 			double dw = deltaOut * producerOut;
@@ -68,13 +68,13 @@ public class FFNetwork {
 		for (Neuron nh : layers.get(1).getNeurons()) {
 			// Connection zum Input
 			Connection c2 = nh.getProducerConnections().get(0);
-			Neuron consumer = c2.getN2();
-			double producerOut = c2.getN1().getOutput();
+			Neuron consumer = c2.getConsumer();
+			double producerOut = c2.getProducer().getOutput();
 			double dconsumer = consumer.getActivationFunction().dcalculate(consumer.getInput());
 			
 			// connection zum output
 			Connection c = nh.getConsumerConnections().get(0);
-			Neuron oconsumer = c.getN2();
+			Neuron oconsumer = c.getConsumer();
 			double oconsumerOut = consumer.getOutput();
 			double odconsumer = oconsumer.getActivationFunction().dcalculate(oconsumer.getInput());
 			double odeltaOut = (oconsumerOut-expected) * odconsumer;
