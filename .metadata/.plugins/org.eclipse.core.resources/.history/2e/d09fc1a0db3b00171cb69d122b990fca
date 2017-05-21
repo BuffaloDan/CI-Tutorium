@@ -124,6 +124,7 @@ public class FFNetwork {
 					n.addConsumerConnection(connection);
 					n2.addProducerConnection(connection);
 
+					System.out.print(weight + ",");
 					// System.out.println("Added Connection between L" + i + "N"
 					// + ni + " and L" + (i + 1) + "N" + ni2
 					// + " with weight " + weight);

@@ -14,7 +14,7 @@ public class FFNetwork {
 
 	private ArrayList<Layer> layers;
 
-	private static final double LEARNING_RATE = 0.2;
+	private static final double LEARNING_RATE = 0.007;
 
 	public FFNetwork(ArrayList<Layer> layers) {
 		this.layers = layers;
@@ -124,6 +124,7 @@ public class FFNetwork {
 					n.addConsumerConnection(connection);
 					n2.addProducerConnection(connection);
 
+					System.out.print(weight + ",");
 					// System.out.println("Added Connection between L" + i + "N"
 					// + ni + " and L" + (i + 1) + "N" + ni2
 					// + " with weight " + weight);
@@ -143,7 +144,7 @@ public class FFNetwork {
 	}
 
 	public static void main(String[] args) {
-		int sampleRate = 160;
+		int sampleRate = 80;
 
 		double[] xWerte = new double[sampleRate + 1];
 		double[] yWerte = new double[sampleRate + 1];
@@ -179,7 +180,7 @@ public class FFNetwork {
 
 		FFNetwork network = new FFNetwork(layers);
 		
-		int runs = 100;
+		int runs = 10000;
 		double[][] yWerteNetwork = new double[runs][sampleRate + 1];
 		double[] errors = new double[sampleRate+1];
 		double step = 20d / sampleRate;
@@ -210,7 +211,7 @@ public class FFNetwork {
 		}
 
 		DefaultXYDataset dataset = createSimpleXYDataset("funtion", xWerte, yWerte);
-		for (int i = 0;i<runs;i+=20) {
+		for (int i = 0;i<runs;i+=2000) {
 			addToDataset(dataset, "network"+i, xWerte, yWerteNetwork[i]);
 		}
 		addToDataset(dataset, "error", xWerte, errors);
