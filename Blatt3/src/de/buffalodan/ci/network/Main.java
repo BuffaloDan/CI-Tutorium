@@ -1,13 +1,10 @@
-package de.buffalodan.ci.network;
-
 import java.util.ArrayList;
 
-import org.jfree.chart.ChartFactory;
+/*import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
-import org.jfree.data.xy.DefaultXYDataset;
-
-import de.buffalodan.ci.network.Neuron.Type;
+import org.jfree.data.xy.DefaultXYDataset;*/
+// das scheint nicht so ganz standard zu sein...
 
 public class Main {
 
@@ -42,8 +39,8 @@ public class Main {
 
 		ArrayList<Layer> layers = new ArrayList<>();
 		Layer inputLayer = new Layer(0);
-		Layer hiddenLayer = new Layer(10, Type.HIDDEN, fermi, 1);
-		Layer outputLayer = new Layer(1, Type.OUTPUT, linear, 0.4);
+		Layer hiddenLayer = new Layer(10, Neuron.Type.HIDDEN, fermi, 1);
+		Layer outputLayer = new Layer(1, Neuron.Type.OUTPUT, linear, 0.4);
 		layers.add(inputLayer);
 		layers.add(hiddenLayer);
 		layers.add(outputLayer);
@@ -78,7 +75,7 @@ public class Main {
 			}
 			System.out.println("Mittlerer quadratischer Fehler:" + (errorTotal / sampleRate + 1));
 		}
-
+/*
 		DefaultXYDataset dataset = createSimpleXYDataset("funtion", xWerte, yWerte);
 		for (int i = 0; i < runs; i += 20) {
 			addToDataset(dataset, "network" + i, xWerte, yWerteNetwork[i]);
@@ -88,8 +85,10 @@ public class Main {
 		ChartFrame frame = new ChartFrame("Plotter", chart);
 		frame.setVisible(true);
 		frame.setSize(800, 600);
+		*/
 	}
 
+	/*
 	public static DefaultXYDataset createSimpleXYDataset(String key, double[] xs, double[] ys) {
 		DefaultXYDataset dataset = new DefaultXYDataset();
 		double[][] data = new double[2][0];
@@ -105,5 +104,6 @@ public class Main {
 		data[1] = ys;
 		dataset.addSeries(key, data);
 	}
+	*/
 
 }
