@@ -1,0 +1,33 @@
+# Aufgabe 1
+Trainingsmenge: .5/1
+Perzeptron: 1/2
+Fehler: 1/1
+Visualisierung: 1/1
+
+Bemerkungen:
+- falsche trainigsmenge von der größe her 
+- deine bias interpretation macht alles kaputt, 
+  daher auch beim training punktabzug
+
+# Aufgabe 2
+Training: 2/3
+Visualisierung Fehler: .5/1
+Visualisierung Netz: 1/1
+
+# Aufgabe 3
+Training: 2/3
+Visualisierung Fehler: 0/1
+Visualisierung Netz: 1/1
+
+-------
+
+Bemerkungen:
+- wäre nett wenn das programm direkt in der konsole kompilierfähig ist...
+- wie selber schon erkannt, war das mit dem fehler nicht ganz so richtig
+- bitte die kommentare ein bisschen aufräumen, dass ich nicht auch die ganzen debugausgaben da noch habe
+  dafür an anderer stelle ein bisschen mehr 
+
+# Aufgabe 4
+3/5   -- ist zwar ein schönes bild aber so ganz ohne text und nichtmal das netz trainieren lassen...
+
+# Gesamt: 13/20

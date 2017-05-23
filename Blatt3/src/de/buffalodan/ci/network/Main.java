@@ -9,7 +9,7 @@ import org.jfree.data.xy.DefaultXYDataset;*/
 public class Main {
 
 	public static void main(String[] args) {
-		int sampleRate = 160;
+		int sampleRate = 1000; //sollten 1001 werte sein
 
 		double[] xWerte = new double[sampleRate + 1];
 		double[] yWerte = new double[sampleRate + 1];
@@ -47,7 +47,7 @@ public class Main {
 
 		FFNetwork network = new FFNetwork(layers);
 
-		int runs = 100;
+		int runs = 1000;
 		double[][] yWerteNetwork = new double[runs][sampleRate + 1];
 		double[] errors = new double[sampleRate + 1];
 		double step = 20d / sampleRate;
@@ -66,8 +66,9 @@ public class Main {
 				// o:"+output);
 				yWerteNetwork[j][i] = output;
 
-				network.hardcodeBackpropagateOutput(yWerte[i]);
-				// network.hardcodeBackpropagateOutputAndHidden(yWerte[i]);
+				//network.hardcodeBackpropagateOutput(yWerte[i]);
+				 network.hardcodeBackpropagateOutputAndHidden(yWerte[i]);
+				//das hier soll vermutlich die möglichkeit sein, zwischen 2 und 3 zu wechseln?
 				double error = network.calculateError(yWerte[i]);
 				errors[i] = error;
 				errorTotal += error;

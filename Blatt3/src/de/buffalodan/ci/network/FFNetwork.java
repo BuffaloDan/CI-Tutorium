@@ -5,7 +5,7 @@ public class FFNetwork {
 
 	private ArrayList<Layer> layers;
 
-	private static final double LEARNING_RATE = 0.2;
+	private static final double LEARNING_RATE = 0.02; // viel zu gross
 
 	public FFNetwork(ArrayList<Layer> layers) {
 		this.layers = layers;

@@ -4,6 +4,9 @@ public class Layer {
 
 	private ArrayList<Neuron> neurons;
 	private double bias;
+	//dein bias hat so keinerlei funktion, da es von der backpropagation ignoriert wird
+	//egtl input neuron mit input konst 1, was ebenfalls mit allen anderen in der
+	//nächsten schicht verbunden ist
 
 	public Layer(double input) {
 		this.neurons = new ArrayList<>();
