@@ -17,33 +17,10 @@ public class Main {
 		double[] xWerte = new double[sampleRate + 1];
 		double[] yWerte = new double[sampleRate + 1];
 
-		ActivationFunction fermi = new ActivationFunction() {
-			public double calculate(double input) {
-				return 1.0 / (1 + Math.exp(-1.0 * input));
-			}
-
-			@Override
-			public double dcalculate(double input) {
-				double fx = calculate(input);
-				return fx * (1 - fx);
-			}
-		};
-
-		ActivationFunction linear = new ActivationFunction() {
-			public double calculate(double input) {
-				return input;
-			}
-
-			@Override
-			public double dcalculate(double input) {
-				return 1;
-			}
-		};
-
 		ArrayList<Layer> layers = new ArrayList<>();
 		Layer inputLayer = new Layer(0);
-		Layer hiddenLayer = new Layer(10, Type.HIDDEN, fermi, 1);
-		Layer outputLayer = new Layer(1, Type.OUTPUT, linear, 0.4);
+		Layer hiddenLayer = new Layer(10, Type.HIDDEN, ActivationFunction.FERMI);
+		Layer outputLayer = new Layer(1, Type.OUTPUT, ActivationFunction.LINEAR);
 		layers.add(inputLayer);
 		layers.add(hiddenLayer);
 		layers.add(outputLayer);
