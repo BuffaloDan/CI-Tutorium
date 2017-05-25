@@ -1,8 +1,6 @@
 package de.buffalodan.ci.network;
 
-public interface ActivationFunction {
-
-	public double calculate(double input);
+public interface ActivationFunction extends Function {
 	
 	// Ableitung
 	public double dcalculate(double input);
@@ -11,7 +9,7 @@ public interface ActivationFunction {
 	
 	public static final ActivationFunction FERMI = new ActivationFunction() {
 		public double calculate(double input) {
-			return 1.0 / (1 + Math.exp(-1.0 * input));
+			return 1 / (1 + Math.exp(-input));
 		}
 
 		@Override
