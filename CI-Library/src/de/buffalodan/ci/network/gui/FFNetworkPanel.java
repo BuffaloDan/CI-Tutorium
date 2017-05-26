@@ -17,8 +17,8 @@ import de.buffalodan.ci.network.ActivationFunction;
 import de.buffalodan.ci.network.Connection;
 import de.buffalodan.ci.network.FFNetwork;
 import de.buffalodan.ci.network.Layer;
-import de.buffalodan.ci.network.neuron.Neuron;
-import de.buffalodan.ci.network.neuron.Neuron.Type;
+import de.buffalodan.ci.network.Neuron;
+import de.buffalodan.ci.network.Neuron.Type;
 
 @SuppressWarnings("serial")
 public class FFNetworkPanel extends JPanel {

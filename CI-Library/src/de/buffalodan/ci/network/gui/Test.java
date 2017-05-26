@@ -6,7 +6,7 @@ import de.buffalodan.ci.network.ActivationFunction;
 import de.buffalodan.ci.network.FFNetwork;
 import de.buffalodan.ci.network.Function;
 import de.buffalodan.ci.network.Layer;
-import de.buffalodan.ci.network.neuron.Neuron.Type;
+import de.buffalodan.ci.network.Neuron.Type;
 
 public class Test {
 

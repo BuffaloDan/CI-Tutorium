@@ -2,8 +2,7 @@ package de.buffalodan.ci.network;
 
 import java.util.ArrayList;
 
-import de.buffalodan.ci.network.neuron.Neuron;
-import de.buffalodan.ci.network.neuron.Neuron.Type;
+import de.buffalodan.ci.network.Neuron.Type;
 
 public class Layer {
 
