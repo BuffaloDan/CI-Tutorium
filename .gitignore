@@ -41,3 +41,4 @@ Thumbs.db
 .recommenders
 */.settings
 */.classpath
+*/lib
