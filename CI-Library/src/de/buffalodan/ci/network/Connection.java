@@ -1,5 +1,7 @@
 package de.buffalodan.ci.network;
 
+import de.buffalodan.ci.network.neuron.Neuron;
+
 /**
  * @author Daniel
  *
