@@ -3,8 +3,12 @@
 Da ich alle Dependencies entfernen konnte, kann man das ganze auch einfach per Build-Scipt kompilieren
 ### Windows
 Einfach `BuildAndRun.bat` aufrufen. Die CI-Library wird direkt mit kompiliert und kopiert
+
+Getestet mit Windows 10 und Oracle JDK 8
 ### Linux
 `BuildAndRun.sh` im BlattX und `build.sh` im CI-Library Ordner müssen mit `sudo chmod 775` ausführbar gemacht werden!
+
+Getestet mit Ubuntu 16.04 und OpenJDK 8
 ## Maven
 Wenn Maven installiert ist einfach `mvn clean install`
 zum Kompilieren und `mvn exec:java` zum Auszuführen benutzen
