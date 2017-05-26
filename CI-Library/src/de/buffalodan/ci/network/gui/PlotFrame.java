@@ -35,14 +35,8 @@ public class PlotFrame extends JFrame {
 		contentPane.add(south, BorderLayout.SOUTH);
 	}
 
-	public void setXValues(double[] xValues) {
-		// Löschen der BeispielDaten
-		plotPanel.resetY();
-		plotPanel.setXValues(xValues);
-	}
-
-	public void addYValues(double[] yValues, Color color, String plotName, int index) {
-		plotPanel.addYValues(yValues, color);
+	public void addPlot(double[][] data, Color color, String plotName, int index) {
+		plotPanel.addPlot(data, color);
 		JCheckBox plot = new JCheckBox(plotName);
 		plot.setSelected(true);
 		plot.setForeground(color);

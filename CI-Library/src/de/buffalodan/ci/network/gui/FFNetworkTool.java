@@ -19,18 +19,17 @@ public class FFNetworkTool {
 	 */
 	private double[][] referenceValues;
 
-	public FFNetworkTool(FFNetwork network, Function referenceFuntion, Range range) {
+	public FFNetworkTool(FFNetwork network, Function referenceFuntion, Range range, int samplerate) {
 		this.network = network;
 		this.range = range;
-		generateReferenceValues(referenceFuntion);
+		generateReferenceValues(referenceFuntion, samplerate);
 	}
 
 	public void start() {
 		networkFrame = new FFNetworkFrame(this);
 		networkFrame.setVisible(true);
 		plotFrame = new PlotFrame();
-		plotFrame.setXValues(referenceValues[0]);
-		plotFrame.addYValues(referenceValues[1], Color.BLUE, "Function", plotNum);
+		plotFrame.addPlot(referenceValues, Color.BLUE, "Function", plotNum);
 		plotNum++;
 		plotFrame.setVisible(true);
 	}
@@ -47,17 +46,21 @@ public class FFNetworkTool {
 			}
 		}
 		runsSum += runs;
+		double[][] data = new double[2][0];
+		// Gleiche X-Werte
+		data[0] = referenceValues[0];
+		data[1] = newYs;
 
 		// Update NetworkFrame and PlotFrame
 		networkFrame.repaint();
-		plotFrame.addYValues(newYs, plotColor, "Runs: " + runsSum, plotNum);
+		plotFrame.addPlot(data, plotColor, "Runs: " + runsSum, plotNum);
 		plotNum++;
 	}
 
-	private void generateReferenceValues(Function referenceFuntion) {
-		referenceValues = new double[2][range.getSampleRate() + 1];
+	private void generateReferenceValues(Function referenceFuntion, int samplerate) {
+		referenceValues = new double[2][samplerate + 1];
 		int i = 0;
-		for (Double x : range) {
+		for (Double x : range.getIterable(samplerate)) {
 			referenceValues[0][i] = x;
 			referenceValues[1][i] = referenceFuntion.calculate(x);
 			i++;

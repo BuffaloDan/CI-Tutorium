@@ -29,9 +29,9 @@ public class Test {
 				return -4 * Math.cos(x / 3) + Math.sin(15 / (Math.abs(0.5 * x + 2) + 1)) + 0.2 * x;
 			}
 		};
-		Range range = new Range(-10, 10, 1000);
+		Range range = new Range(-10, 10);
 
-		FFNetworkTool networkTool = new FFNetworkTool(network, refFuntion, range);
+		FFNetworkTool networkTool = new FFNetworkTool(network, refFuntion, range, 1000);
 		networkTool.start();
 	}
 
