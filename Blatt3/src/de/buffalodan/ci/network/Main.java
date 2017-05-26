@@ -2,10 +2,6 @@ package de.buffalodan.ci.network;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartFrame;
-import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.DefaultXYDataset;
 
 import de.buffalodan.ci.network.neuron.Neuron.Type;
@@ -26,12 +22,12 @@ public class Main {
 		Layer hiddenLayer = new Layer(10, Type.HIDDEN, ActivationFunction.FERMI);
 		hiddenLayer.addBias();
 		Layer outputLayer = new Layer(1, Type.OUTPUT, ActivationFunction.LINEAR);
+
 		layers.add(inputLayer);
 		layers.add(hiddenLayer);
 		layers.add(outputLayer);
 
 		FFNetwork network = new FFNetwork(layers);
-
 		int runs = 6001;
 		double[][] yWerteNetwork = new double[4][sampleRate];
 		double[] errors = new double[sampleRate];
@@ -51,8 +47,6 @@ public class Main {
 					yWerteNetwork[run / 2000][i] = output;
 
 				network.backpropagate(yWerte[i]);
-
-				// network.hardcodeBackpropagateOutputAndHidden(yWerte[i]);
 				double error = network.calculateError(yWerte[i]);
 				errors[i] = error;
 				errorTotal += error;
@@ -63,7 +57,6 @@ public class Main {
 				System.out.println("Finished run " + run + " with error: " + df.format(meanError));
 			}
 		}
-
 		DefaultXYDataset dataset = createSimpleXYDataset("funtion", xWerte, yWerte);
 		for (int i = 0; i < 4; i++) {
 			addToDataset(dataset, "network" + i, xWerte, yWerteNetwork[i]);
