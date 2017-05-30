@@ -9,7 +9,6 @@ public class Connection {
 	private Neuron producer;
 	private Neuron consumer;
 	private double weight;
-	private double newWeight = 0;
 
 	/**
 	 * N1 ist das Neuron, das seinen Output an N2 schickt und nie andersrum!
@@ -23,12 +22,10 @@ public class Connection {
 		this.producer = producer;
 		this.consumer = consumer;
 		this.weight = weight;
-		newWeight = weight;
 	}
 
 	public void setWeight(double weight) {
 		this.weight = weight;
-		this.newWeight = weight;
 	}
 
 	public double getWeight() {
@@ -41,14 +38,5 @@ public class Connection {
 
 	public Neuron getConsumer() {
 		return consumer;
-	}
-	
-	public void setNewWeight(double newWeight) {
-		this.newWeight = newWeight;
-	}
-	
-	public void update() {
-		//if (newWeight!=weight) System.out.println(weight+"-->"+newWeight);
-		weight = newWeight;
 	}
 }

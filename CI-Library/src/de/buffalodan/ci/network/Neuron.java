@@ -7,21 +7,21 @@ import java.util.ArrayList;
  */
 public class Neuron {
 
-	private double input = 0;
-	private double output = 0;
-	private double delta = 0;
-	private Type type;
-	private ActivationFunction activationFunction;
+	protected double input = 0;
+	protected double output = 0;
+	protected double delta = 0;
+	protected Type type;
+	protected ActivationFunction activationFunction;
 
 	/**
 	 * All connections from producers (Layer before)
 	 */
-	private ArrayList<Connection> producerConnections = null;
+	protected ArrayList<Connection> producerConnections = null;
 
 	/**
 	 * All connections to consumers (Layer after)
 	 */
-	private ArrayList<Connection> consumerConnections = null;
+	protected ArrayList<Connection> consumerConnections = null;
 
 	public Neuron(double input) {
 		this(Type.INPUT, null);
@@ -65,7 +65,7 @@ public class Neuron {
 		}
 	}
 
-	public void consume(double input) {
+	protected void consume(double input) {
 		this.input += input;
 	}
 	

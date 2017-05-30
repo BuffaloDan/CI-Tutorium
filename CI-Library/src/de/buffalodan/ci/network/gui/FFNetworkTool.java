@@ -1,15 +1,21 @@
 package de.buffalodan.ci.network.gui;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import de.buffalodan.ci.network.FFNetwork;
 import de.buffalodan.ci.network.Function;
+import de.buffalodan.ci.network.gui.PlotPanel.PlotType;
 
-public class FFNetworkTool {
+public class FFNetworkTool implements NetworkTool {
 
 	private FFNetwork network;
 	private Range range;
-	private FFNetworkFrame networkFrame;
+	private NetworkFrame networkFrame;
 	private PlotFrame plotFrame;
 	private int plotNum = 0;
 	private int runsSum = 0;
@@ -26,10 +32,10 @@ public class FFNetworkTool {
 	}
 
 	public void start() {
-		networkFrame = new FFNetworkFrame(this);
+		networkFrame = new NetworkFrame(this);
 		networkFrame.setVisible(true);
 		plotFrame = new PlotFrame();
-		plotFrame.addPlot(referenceValues, Color.BLUE, "Function", plotNum);
+		plotFrame.addPlot(referenceValues, Color.BLUE, PlotType.LINE, "Function", plotNum);
 		plotNum++;
 		plotFrame.setVisible(true);
 	}
@@ -53,7 +59,7 @@ public class FFNetworkTool {
 
 		// Update NetworkFrame and PlotFrame
 		networkFrame.repaint();
-		plotFrame.addPlot(data, plotColor, "Runs: " + runsSum, plotNum);
+		plotFrame.addPlot(data, plotColor, PlotType.LINE, "Runs: " + runsSum, plotNum);
 		plotNum++;
 	}
 
@@ -69,5 +75,32 @@ public class FFNetworkTool {
 
 	public FFNetwork getNetwork() {
 		return network;
+	}
+
+	@Override
+	public void screenShot() {
+		BufferedImage networkFrameImage = new BufferedImage(networkFrame.getWidth(), networkFrame.getHeight(),
+				BufferedImage.TYPE_INT_RGB);
+		networkFrame.paint(networkFrameImage.getGraphics()); // alternately use
+																// .printAll(..)
+		BufferedImage plotFrameImage = new BufferedImage(plotFrame.getWidth(), plotFrame.getHeight(),
+				BufferedImage.TYPE_INT_RGB);
+		plotFrame.paint(networkFrameImage.getGraphics()); // alternately use
+															// .printAll(..)
+		BufferedImage combinedImage = new BufferedImage(networkFrameImage.getWidth() + plotFrameImage.getWidth(),
+				Math.max(networkFrameImage.getHeight(), plotFrameImage.getHeight()), BufferedImage.TYPE_INT_RGB);
+		combinedImage.getGraphics().drawImage(networkFrameImage, 0, 0, null);
+		combinedImage.getGraphics().drawImage(plotFrameImage, networkFrameImage.getWidth(), 0, null);
+		int screenshotNum = 0;
+		File out = new File("SS_" + screenshotNum + ".png");
+		while (out.exists()) {
+			screenshotNum++;
+			out = new File("SS_" + screenshotNum + ".png");
+		}
+		try {
+			ImageIO.write(combinedImage, "PNG", out);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

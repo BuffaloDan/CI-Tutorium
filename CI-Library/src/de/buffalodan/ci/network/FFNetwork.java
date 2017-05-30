@@ -29,14 +29,36 @@ public class FFNetwork {
 		return learningRate;
 	}
 
-	public double run(double input, double expected) {
+	public double run(double[] inputs, double expected, boolean backpropagateAll) {
 		reset();
-		setInput(input);
+		for (int i = 0; i < inputs.length; i++) {
+			inputLayer.getNeurons().get(i).setInput(inputs[i]);
+		}
 		calculate();
 		lastError = calculateError(expected);
-		backpropagate(expected);
+		if (backpropagateAll) {
+			backpropagate(expected);
+		} else {
+			backpropagateOutputLayer(new double[] { expected });
+		}
 
+		return getSingleOutput();
+	}
+
+	public Layer getInputLayer() {
+		return inputLayer;
+	}
+
+	public Layer getOutputLayer() {
+		return outputLayer;
+	}
+
+	public double getSingleOutput() {
 		return outputLayer.getNeurons().get(0).getOutput();
+	}
+
+	public double run(double input, double expected) {
+		return run(new double[] { input }, expected, true);
 	}
 
 	public void setInput(double input) {
@@ -57,6 +79,16 @@ public class FFNetwork {
 		return layers;
 	}
 
+	public void backpropagateOutputLayer(double[] expected) {
+		// Nur Output Layer
+		int i = 0;
+		for (Neuron neuron : outputLayer.getNeurons()) {
+			neuron.calcDelta(expected[i]);
+			neuron.updateWeights(learningRate);
+			i++;
+		}
+	}
+
 	public void backpropagate(double expected) {
 		// Berechne die Deltas
 		// Die Inputschicht wird dabei natürlich ausgelassen
@@ -75,11 +107,6 @@ public class FFNetwork {
 			layer.pullAndProduce();
 		}
 	}
-
-	/*
-	 * private double[] testWeights = { -0.5, 0.3, 0.2, -0.3, 0.3, -0.1, 0.2,
-	 * 0.2, -0.4, -0.4, -0.1, 0.4, 0.3, 0.4, -0.2, 0.5, 0.1, -0.2, 0.4, -0.4 };
-	 */
 
 	private void buildConnections() {
 		Random r = new Random(System.currentTimeMillis());

@@ -10,7 +10,7 @@ public class Layer {
 	private Neuron bias;
 
 	public Layer(double input) {
-		this.neurons = new ArrayList<>();
+		this.neurons = new ArrayList<Neuron>();
 		Neuron n = new Neuron(input);
 		this.neurons.add(n);
 	}
@@ -23,8 +23,8 @@ public class Layer {
 		}
 	}
 
-	public Layer(ArrayList<Neuron> neurons) {
-		this.neurons = neurons;
+	public Layer(ArrayList<? extends Neuron> neurons) {
+		this.neurons = new ArrayList<>(neurons);
 	}
 
 	public ArrayList<Neuron> getNeurons() {
