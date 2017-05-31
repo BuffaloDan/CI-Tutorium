@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 
 import de.buffalodan.ci.network.ActivationFunction;
 import de.buffalodan.ci.network.Connection;
-import de.buffalodan.ci.network.FFNetwork;
+import de.buffalodan.ci.network.Network;
 import de.buffalodan.ci.network.Layer;
 import de.buffalodan.ci.network.Neuron;
 import de.buffalodan.ci.network.Neuron.Type;
@@ -24,7 +24,7 @@ import de.buffalodan.ci.network.Neuron.Type;
 @SuppressWarnings("serial")
 public class NetworkPanel extends JPanel {
 
-	private FFNetwork network;
+	private Network network;
 	private int neuronRadius = 20;
 	private boolean showBias = false;
 	private HashMap<Neuron, Point> neuronPositions = new HashMap<>();
@@ -44,7 +44,7 @@ public class NetworkPanel extends JPanel {
 		layers.add(hiddenLayer);
 		layers.add(outputLayer);
 
-		network = new FFNetwork(layers);
+		network = new Network(layers);
 
 		addComponentListener(new ResizeListener());
 	}
@@ -89,13 +89,13 @@ public class NetworkPanel extends JPanel {
 		}
 	}
 
-	public void setNetwork(FFNetwork network) {
+	public void setNetwork(Network network) {
 		this.network = network;
 		initPositions();
 		repaint();
 	}
 
-	public FFNetwork getNetwork() {
+	public Network getNetwork() {
 		return network;
 	}
 

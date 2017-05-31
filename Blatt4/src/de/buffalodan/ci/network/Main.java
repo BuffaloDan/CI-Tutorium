@@ -114,7 +114,7 @@ public class Main {
 	}
 
 	private static void visualize() {
-		int numRBFs = 30;
+		int numRBFs = 90;
 
 		double[][] dataC1 = new double[2][0];
 		double[][] dataC2 = new double[2][0];
@@ -124,6 +124,7 @@ public class Main {
 		double[] c2x1 = new double[100];
 		double[] c2x2 = new double[100];
 
+		// Die 
 		ArrayList<DoublePoint> points = new ArrayList<>();
 		for (int i = 0; i < 100; i++) {
 			// u=1,...,100
@@ -135,15 +136,6 @@ public class Main {
 			points.add(new DoublePoint(new double[] { c1x1[i], c1x2[i] }));
 			points.add(new DoublePoint(new double[] { c2x1[i], c2x2[i] }));
 		}
-		// test
-		/*
-		 * File csvFile = new File("data.csv"); try { PrintStream ps = new
-		 * PrintStream(csvFile); for (int i = 0; i < 100; i++) {
-		 * ps.printf(Locale.ENGLISH, "%f,%f,1\n", c1x1[i], c1x2[i]); } for (int
-		 * i = 0; i < 100; i++) { ps.printf(Locale.ENGLISH, "%f,%f,2\n",
-		 * c2x1[i], c2x2[i]); } ps.close(); } catch (FileNotFoundException e) {
-		 * // TODO Auto-generated catch block e.printStackTrace(); }
-		 */
 
 		dataC1[0] = c1x1;
 		dataC1[1] = c1x2;
@@ -171,6 +163,8 @@ public class Main {
 		Layer inputLayer = new Layer(inputNeurons);
 
 		ArrayList<RBFNeuron> rbfNeurons = new ArrayList<>();
+		
+		// Hier habe ich mit verschiedenen 
 		sigmaMethod4(rbfNeurons, numRBFs, clusterData, dataC1, dataC2);
 		// sigmaMethod2(rbfNeurons, numRBFs, clusterData);
 		// sigmaMethod3(rbfNeurons, numRBFs);
@@ -183,7 +177,7 @@ public class Main {
 		layers.add(hiddenLayer);
 		layers.add(outputLayer);
 
-		FFNetwork network = new FFNetwork(layers);
+		Network network = new Network(layers);
 
 		// Update RBF "Gewichte"
 		for (int i = 0; i < numRBFs; i++) {
@@ -209,7 +203,8 @@ public class Main {
 		plotFrame.setVisible(true);
 
 		RBFNetworkTool tool = new RBFNetworkTool(network);
-		tool.start(plotFrame, c1x1, c1x2, c2x1, c2x2);
+		tool.init(plotFrame, c1x1, c1x2, c2x1, c2x2);
+		tool.start();
 	}
 
 	public static void main(String[] args) {

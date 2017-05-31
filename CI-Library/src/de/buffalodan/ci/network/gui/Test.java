@@ -3,7 +3,7 @@ package de.buffalodan.ci.network.gui;
 import java.util.ArrayList;
 
 import de.buffalodan.ci.network.ActivationFunction;
-import de.buffalodan.ci.network.FFNetwork;
+import de.buffalodan.ci.network.Network;
 import de.buffalodan.ci.network.Function;
 import de.buffalodan.ci.network.Layer;
 import de.buffalodan.ci.network.Neuron.Type;
@@ -21,7 +21,7 @@ public class Test {
 		layers.add(hiddenLayer);
 		layers.add(outputLayer);
 
-		FFNetwork network = new FFNetwork(layers);
+		Network network = new Network(layers);
 		Function refFuntion = new Function() {
 			
 			@Override

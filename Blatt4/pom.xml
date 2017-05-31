@@ -27,6 +27,11 @@
 	</build>
 	<dependencies>
 		<dependency>
+			<groupId>com.madgag</groupId>
+			<artifactId>animated-gif-lib</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
 			<groupId>de.buffalodan.ci</groupId>
 			<artifactId>CI-Library</artifactId>
 			<version>0.0.1-SNAPSHOT</version>

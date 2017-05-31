@@ -7,13 +7,13 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import de.buffalodan.ci.network.FFNetwork;
+import de.buffalodan.ci.network.Network;
 import de.buffalodan.ci.network.Function;
 import de.buffalodan.ci.network.gui.PlotPanel.PlotType;
 
 public class FFNetworkTool implements NetworkTool {
 
-	private FFNetwork network;
+	private Network network;
 	private Range range;
 	private NetworkFrame networkFrame;
 	private PlotFrame plotFrame;
@@ -25,7 +25,7 @@ public class FFNetworkTool implements NetworkTool {
 	 */
 	private double[][] referenceValues;
 
-	public FFNetworkTool(FFNetwork network, Function referenceFuntion, Range range, int samplerate) {
+	public FFNetworkTool(Network network, Function referenceFuntion, Range range, int samplerate) {
 		this.network = network;
 		this.range = range;
 		generateReferenceValues(referenceFuntion, samplerate);
@@ -73,7 +73,7 @@ public class FFNetworkTool implements NetworkTool {
 		}
 	}
 
-	public FFNetwork getNetwork() {
+	public Network getNetwork() {
 		return network;
 	}
 

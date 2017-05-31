@@ -7,6 +7,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import com.madgag.gif.fmsware.AnimatedGifEncoder;
+
 import de.buffalodan.ci.network.gui.NetworkFrame;
 import de.buffalodan.ci.network.gui.NetworkTool;
 import de.buffalodan.ci.network.gui.PlotFrame;
@@ -14,7 +16,8 @@ import de.buffalodan.ci.network.gui.Range;
 
 public class RBFNetworkTool implements NetworkTool {
 
-	private FFNetwork network;
+	private Network network;
+	private long runsAll = 0;
 	private double[] c1x1;
 	private double[] c1x2;
 	private double[] c2x1;
@@ -22,14 +25,13 @@ public class RBFNetworkTool implements NetworkTool {
 	private PlotFrame plotFrame;
 	private NetworkFrame networkFrame;
 
-	public RBFNetworkTool(FFNetwork network) {
+	private static final boolean WITH_GIF = true;
+
+	public RBFNetworkTool(Network network) {
 		this.network = network;
 	}
 
-	public void start(PlotFrame plotFrame, double[] c1x1, double[] c1x2, double[] c2x1, double[] c2x2) {
-		networkFrame = new NetworkFrame(this);
-		networkFrame.setVisible(true);
-
+	public void init(PlotFrame plotFrame, double[] c1x1, double[] c1x2, double[] c2x1, double[] c2x2) {
 		this.c1x1 = c1x1;
 		this.c1x2 = c1x2;
 		this.c2x1 = c2x1;
@@ -39,6 +41,11 @@ public class RBFNetworkTool implements NetworkTool {
 
 	@Override
 	public void run(int runs, Color plotColor) {
+		AnimatedGifEncoder gif = new AnimatedGifEncoder();
+		if (WITH_GIF) {
+			gif.start("output.gif");
+			gif.setFrameRate(15);
+		}
 		for (int run = 0; run < runs; run++) {
 			for (int i = 0; i < 100; i++) {
 				network.reset();
@@ -63,6 +70,17 @@ public class RBFNetworkTool implements NetworkTool {
 				// network.backpropagate(-1);
 				network.backpropagateOutputLayer(new double[] { -1 });
 			}
+			// 100 mal gif frames
+			double r100 = runs / 300;
+			if (r100 == 0) {
+				r100 = runs;
+			}
+			if (run % r100 == 0 && WITH_GIF) {
+				BufferedImage bi = new BufferedImage(plotFrame.getPlotPanel().getWidth(),
+						plotFrame.getPlotPanel().getHeight(), BufferedImage.TYPE_INT_RGB);
+				plotFrame.getPlotPanel().renderToImage(bi);
+				gif.addFrame(bi);
+			}
 			// 20 mal aktualisieren
 			double r20 = runs / 20;
 			// Divide by zero verhindern
@@ -84,7 +102,7 @@ public class RBFNetworkTool implements NetworkTool {
 						// double out2 =
 						// network.getOutputLayer().getNeurons().get(1).getOutput();
 						// System.out.println(out);
-						if (out > 0) { // && out2 < 0) {
+						if (out > 0) {// && out2 < 0) {
 							networkC1DataTmp[0][c1] = x1;
 							networkC1DataTmp[1][c1++] = x2;
 						} else if (out < 0) { // && out2 > 0) {
@@ -113,7 +131,7 @@ public class RBFNetworkTool implements NetworkTool {
 				}
 				plotFrame.getPlotPanel().updatePlotData(centerData, 4, false);
 
-				plotFrame.setRuns(run);
+				plotFrame.setRuns(runsAll + run);
 				plotFrame.repaint();
 				networkFrame.repaint();
 				/*
@@ -122,10 +140,13 @@ public class RBFNetworkTool implements NetworkTool {
 				 */
 			}
 		}
+		if (WITH_GIF)
+			gif.finish();
+		runsAll += runs;
 	}
 
 	@Override
-	public FFNetwork getNetwork() {
+	public Network getNetwork() {
 		return network;
 	}
 
@@ -134,12 +155,6 @@ public class RBFNetworkTool implements NetworkTool {
 		BufferedImage networkFrameImage = new BufferedImage(networkFrame.getWidth(), networkFrame.getHeight(),
 				BufferedImage.TYPE_INT_RGB);
 		networkFrame.paint(networkFrameImage.getGraphics());
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		BufferedImage plotFrameImage = new BufferedImage(plotFrame.getWidth(), plotFrame.getHeight(),
 				BufferedImage.TYPE_INT_RGB);
 		plotFrame.paint(plotFrameImage.getGraphics());
@@ -148,7 +163,7 @@ public class RBFNetworkTool implements NetworkTool {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		BufferedImage combinedImage = new BufferedImage(networkFrameImage.getWidth() + plotFrameImage.getWidth(),
 				Math.max(networkFrameImage.getHeight(), plotFrameImage.getHeight()), BufferedImage.TYPE_INT_RGB);
 		combinedImage.getGraphics().drawImage(networkFrameImage, 0, 0, null);
@@ -160,16 +175,16 @@ public class RBFNetworkTool implements NetworkTool {
 			out = new File("SS_" + screenshotNum + ".png");
 		}
 		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
 			ImageIO.write(combinedImage, "PNG", out);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void start() {
+		networkFrame = new NetworkFrame(this);
+		networkFrame.setVisible(true);
 	}
 
 }

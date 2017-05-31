@@ -42,8 +42,8 @@ public class PlotFrame extends JFrame {
 		south.add(lblRuns);
 	}
 	
-	public void setRuns(int runs) {
-		lblRuns.setText("Runs: "+runs);
+	public void setRuns(long runsAll) {
+		lblRuns.setText("Runs: "+runsAll);
 	}
 	
 	public void addPlot(Double[][] data, Color color, PlotType type, String plotName, int index) {

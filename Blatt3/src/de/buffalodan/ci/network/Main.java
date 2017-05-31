@@ -22,7 +22,7 @@ public class Main {
 		layers.add(hiddenLayer);
 		layers.add(outputLayer);
 
-		FFNetwork network = new FFNetwork(layers);
+		Network network = new Network(layers);
 		Function refFuntion = new Function() {
 
 			@Override
