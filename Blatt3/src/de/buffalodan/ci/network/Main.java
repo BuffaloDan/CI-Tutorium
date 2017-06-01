@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import de.buffalodan.ci.network.Neuron.Type;
 import de.buffalodan.ci.network.gui.FFNetworkTool;
-import de.buffalodan.ci.network.gui.Range;
 
 public class Main {
 

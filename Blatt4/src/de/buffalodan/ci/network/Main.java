@@ -113,18 +113,16 @@ public class Main {
 		}
 	}
 
-	private static void visualize() {
-		int numRBFs = 90;
-
+	private static void visualize(int sigmaMethod, int rbfs) {
 		double[][] dataC1 = new double[2][0];
 		double[][] dataC2 = new double[2][0];
-		double[][] clusterData = new double[2][numRBFs];
+		double[][] clusterData = new double[2][rbfs];
 		double[] c1x1 = new double[100];
 		double[] c1x2 = new double[100];
 		double[] c2x1 = new double[100];
 		double[] c2x2 = new double[100];
 
-		// Die 
+		// Die
 		ArrayList<DoublePoint> points = new ArrayList<>();
 		for (int i = 0; i < 100; i++) {
 			// u=1,...,100
@@ -143,7 +141,7 @@ public class Main {
 		dataC2[1] = c2x2;
 
 		// Die Center für die RBF-Units mit K-Means berechnen
-		KMeansPlusPlusClusterer<DoublePoint> clusterer = new KMeansPlusPlusClusterer<>(numRBFs, 10000);
+		KMeansPlusPlusClusterer<DoublePoint> clusterer = new KMeansPlusPlusClusterer<>(rbfs, 10000);
 		List<CentroidCluster<DoublePoint>> results = clusterer.cluster(points);
 		int cl = 0;
 		// Random r = new Random(System.currentTimeMillis());
@@ -163,9 +161,24 @@ public class Main {
 		Layer inputLayer = new Layer(inputNeurons);
 
 		ArrayList<RBFNeuron> rbfNeurons = new ArrayList<>();
-		
-		// Hier habe ich mit verschiedenen 
-		sigmaMethod4(rbfNeurons, numRBFs, clusterData, dataC1, dataC2);
+
+		switch (sigmaMethod) {
+		case 1:
+			sigmaMethod1(rbfNeurons, rbfs, clusterData, dataC1, dataC2);
+			break;
+		case 2:
+			sigmaMethod2(rbfNeurons, rbfs, clusterData);
+			break;
+		case 3:
+			 sigmaMethod3(rbfNeurons, rbfs);
+			 break;
+		case 4:
+			sigmaMethod4(rbfNeurons, rbfs, clusterData, dataC1, dataC2);
+			break;
+		default:
+			System.out.println("sigmamethode muss zwischen 1-4 liegen!");
+			return;
+		}
 		// sigmaMethod2(rbfNeurons, numRBFs, clusterData);
 		// sigmaMethod3(rbfNeurons, numRBFs);
 
@@ -180,7 +193,7 @@ public class Main {
 		Network network = new Network(layers);
 
 		// Update RBF "Gewichte"
-		for (int i = 0; i < numRBFs; i++) {
+		for (int i = 0; i < rbfs; i++) {
 			RBFNeuron n = rbfNeurons.get(i);
 			Connection x1Conn = n.getProducerConnections().get(0);
 			Connection x2Conn = n.getProducerConnections().get(1);
@@ -208,7 +221,17 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		visualize();
+		if (args.length != 2) {
+			System.out.println("usage: Main <sigmamethode(1-4)> <num rbfs>");
+			return;
+		}
+		try {
+			int method = Integer.parseInt(args[0]);
+			int rbfs = Integer.parseInt(args[1]);
+			visualize(method, rbfs);
+		} catch (NumberFormatException e) {
+			System.out.println("Das ist keine Zahl...");
+		}
 	}
 
 }

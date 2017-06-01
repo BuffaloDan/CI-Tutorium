@@ -14,6 +14,8 @@ public class Network {
 
 	private double learningRate = 0.03;
 
+	private PropagationMode propagationMode = PropagationMode.ALL;
+
 	public Network(ArrayList<Layer> layers) {
 		this.layers = layers;
 		this.inputLayer = layers.get(0);
@@ -29,17 +31,32 @@ public class Network {
 		return learningRate;
 	}
 
-	public double run(double[] inputs, double expected, boolean backpropagateAll) {
-		reset();
+	public void setInputs(double[] inputs) {
 		for (int i = 0; i < inputs.length; i++) {
 			inputLayer.getNeurons().get(i).setInput(inputs[i]);
 		}
+	}
+
+	public void setPropagationMode(PropagationMode propagationMode) {
+		this.propagationMode = propagationMode;
+	}
+
+	public PropagationMode getPropagationMode() {
+		return propagationMode;
+	}
+
+	public double run(double[] inputs, double[] expected) {
+		reset();
+		setInputs(inputs);
 		calculate();
-		lastError = calculateError(expected);
-		if (backpropagateAll) {
-			backpropagate(expected);
-		} else {
-			backpropagateOutputLayer(new double[] { expected });
+		// Da muss ich mir noch was überlegen :D
+		// lastError = calculateError(expected[0]);
+		if (expected != null) {
+			if (propagationMode == PropagationMode.ALL) {
+				backpropagate(expected);
+			} else {
+				backpropagateOutputLayer(expected);
+			}
 		}
 
 		return getSingleOutput();
@@ -57,8 +74,16 @@ public class Network {
 		return outputLayer.getNeurons().get(0).getOutput();
 	}
 
+	public double[] getOutput() {
+		double[] output = new double[outputLayer.getNeurons().size()];
+		for (int i = 0; i < outputLayer.getNeurons().size(); i++) {
+			output[i] = outputLayer.getNeurons().get(i).getOutput();
+		}
+		return output;
+	}
+
 	public double run(double input, double expected) {
-		return run(new double[] { input }, expected, true);
+		return run(new double[] { input }, new double[] { expected });
 	}
 
 	public void setInput(double input) {
@@ -89,12 +114,18 @@ public class Network {
 		}
 	}
 
-	public void backpropagate(double expected) {
+	public void backpropagate(double[] expected) {
 		// Berechne die Deltas
 		// Die Inputschicht wird dabei natürlich ausgelassen
 		for (int i = layers.size() - 1; i > 0; i--) {
+			int j = 0;
 			for (Neuron neuron : layers.get(i).getNeurons()) {
-				neuron.calcDelta(expected);
+				if (layers.get(i) == outputLayer) {
+					neuron.calcDelta(expected[j]);
+					j++;
+				} else {
+					neuron.calcDelta(0);
+				}
 				neuron.updateWeights(learningRate);
 			}
 		}
@@ -130,6 +161,10 @@ public class Network {
 		for (Layer layer : layers) {
 			layer.reset();
 		}
+	}
+
+	public enum PropagationMode {
+		ALL, OUTPUT;
 	}
 
 }

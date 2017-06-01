@@ -17,8 +17,8 @@ public class XORNetworkTool implements NetworkTool {
 	@Override
 	public void run(int runs, Color plotColor) {
 		network.reset();
-		network.getInputLayer().getNeurons().get(0).setInput(x1);
-		network.getInputLayer().getNeurons().get(1).setInput(x2);
+		network.getInputLayer().getNeurons().get(0).setInput(0);
+		network.getInputLayer().getNeurons().get(1).setInput(0);
 		network.calculate();
 	}
 

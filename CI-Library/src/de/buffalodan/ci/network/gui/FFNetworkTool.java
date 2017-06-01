@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import de.buffalodan.ci.network.Network;
+import de.buffalodan.ci.network.Range;
 import de.buffalodan.ci.network.Function;
 import de.buffalodan.ci.network.gui.PlotPanel.PlotType;
 

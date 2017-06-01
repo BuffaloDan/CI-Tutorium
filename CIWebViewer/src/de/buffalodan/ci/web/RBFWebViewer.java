@@ -23,13 +23,13 @@ import org.apache.commons.math3.ml.clustering.KMeansPlusPlusClusterer;
 
 import de.buffalodan.ci.network.ActivationFunction;
 import de.buffalodan.ci.network.Connection;
-import de.buffalodan.ci.network.FFNetwork;
 import de.buffalodan.ci.network.Layer;
+import de.buffalodan.ci.network.Network;
 import de.buffalodan.ci.network.Neuron;
 import de.buffalodan.ci.network.RBFNeuron;
+import de.buffalodan.ci.network.Range;
 import de.buffalodan.ci.network.Neuron.Type;
 import de.buffalodan.ci.network.gui.PlotPanel;
-import de.buffalodan.ci.network.gui.Range;
 import de.buffalodan.ci.network.gui.PlotPanel.PlotType;
 
 /**
@@ -174,7 +174,7 @@ public class RBFWebViewer extends HttpServlet {
 		layers.add(hiddenLayer);
 		layers.add(outputLayer);
 
-		FFNetwork network = new FFNetwork(layers);
+		Network network = new Network(layers);
 
 		// Update RBF "Gewichte"
 		for (int i = 0; i < rbfs; i++) {

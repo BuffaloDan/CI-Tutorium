@@ -12,7 +12,6 @@ import com.madgag.gif.fmsware.AnimatedGifEncoder;
 import de.buffalodan.ci.network.gui.NetworkFrame;
 import de.buffalodan.ci.network.gui.NetworkTool;
 import de.buffalodan.ci.network.gui.PlotFrame;
-import de.buffalodan.ci.network.gui.Range;
 
 public class RBFNetworkTool implements NetworkTool {
 
@@ -43,6 +42,8 @@ public class RBFNetworkTool implements NetworkTool {
 	public void run(int runs, Color plotColor) {
 		AnimatedGifEncoder gif = new AnimatedGifEncoder();
 		if (WITH_GIF) {
+			File g = new File("output.gif");
+			if (g.exists()) g.delete();
 			gif.start("output.gif");
 			gif.setFrameRate(15);
 		}
@@ -71,7 +72,7 @@ public class RBFNetworkTool implements NetworkTool {
 				network.backpropagateOutputLayer(new double[] { -1 });
 			}
 			// 100 mal gif frames
-			double r100 = runs / 300;
+			double r100 = runs / 100;
 			if (r100 == 0) {
 				r100 = runs;
 			}
