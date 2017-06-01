@@ -9,6 +9,7 @@ import org.apache.commons.math3.ml.clustering.CentroidCluster;
 import org.apache.commons.math3.ml.clustering.DoublePoint;
 import org.apache.commons.math3.ml.clustering.KMeansPlusPlusClusterer;
 
+import de.buffalodan.ci.network.Network.PropagationMode;
 import de.buffalodan.ci.network.Neuron.Type;
 import de.buffalodan.ci.network.gui.PlotFrame;
 import de.buffalodan.ci.network.gui.PlotPanel.PlotType;
@@ -59,6 +60,7 @@ public class Main {
 		}
 	}
 
+	// Ähnlich wie 1, leifert aber ein anderes Ergebnis
 	private static void sigmaMethod4(ArrayList<RBFNeuron> rbfNeurons, int numRBFs, double[][] clusterData,
 			double[][] dataC1, double[][] dataC2) {
 		for (int i = 0; i < numRBFs; i++) {
@@ -179,8 +181,6 @@ public class Main {
 			System.out.println("sigmamethode muss zwischen 1-4 liegen!");
 			return;
 		}
-		// sigmaMethod2(rbfNeurons, numRBFs, clusterData);
-		// sigmaMethod3(rbfNeurons, numRBFs);
 
 		Layer hiddenLayer = new Layer(rbfNeurons);
 		hiddenLayer.addBias();
@@ -191,6 +191,7 @@ public class Main {
 		layers.add(outputLayer);
 
 		Network network = new Network(layers);
+		network.setPropagationMode(PropagationMode.OUTPUT);
 
 		// Update RBF "Gewichte"
 		for (int i = 0; i < rbfs; i++) {
@@ -218,6 +219,8 @@ public class Main {
 		RBFNetworkTool tool = new RBFNetworkTool(network);
 		tool.init(plotFrame, c1x1, c1x2, c2x1, c2x2);
 		tool.start();
+		
+		// Die eigentliche logik, die das Netzwerk lernen lässt ist in RBFNetworkTool
 	}
 
 	public static void main(String[] args) {

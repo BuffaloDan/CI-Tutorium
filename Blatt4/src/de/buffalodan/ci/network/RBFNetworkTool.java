@@ -43,33 +43,15 @@ public class RBFNetworkTool implements NetworkTool {
 		AnimatedGifEncoder gif = new AnimatedGifEncoder();
 		if (WITH_GIF) {
 			File g = new File("output.gif");
-			if (g.exists()) g.delete();
+			if (g.exists())
+				g.delete();
 			gif.start("output.gif");
 			gif.setFrameRate(15);
 		}
 		for (int run = 0; run < runs; run++) {
 			for (int i = 0; i < 100; i++) {
-				network.reset();
-				network.getInputLayer().getNeurons().get(0).setInput(c1x1[i]);
-				network.getInputLayer().getNeurons().get(1).setInput(c1x2[i]);
-				network.calculate();
-				// System.out.println(c1x1[i] + "," + c1x2[i] + ": " +
-				// network.getSingleOutput());
-				// network.backpropagate(1);
-				network.backpropagateOutputLayer(new double[] { 1 });
-				// double out1 = network.getSingleOutput();
-				// double out2 =
-				// network.getOutputLayer().getNeurons().get(1).getOutput();
-				// System.out.println(out1+" "+out2);
-
-				network.reset();
-				network.getInputLayer().getNeurons().get(0).setInput(c2x1[i]);
-				network.getInputLayer().getNeurons().get(1).setInput(c2x2[i]);
-				network.calculate();
-				// System.out.println(c2x1[i] + "," + c2x2[i] + ": " +
-				// network.getSingleOutput());
-				// network.backpropagate(-1);
-				network.backpropagateOutputLayer(new double[] { -1 });
+				network.run(new double[] { c1x1[i], c1x2[i] }, new double[] { 1 });
+				network.run(new double[] { c2x1[i], c2x2[i] }, new double[] { -1 });
 			}
 			// 100 mal gif frames
 			double r100 = runs / 100;
@@ -95,18 +77,16 @@ public class RBFNetworkTool implements NetworkTool {
 				int c1 = 0, c2 = 0;
 				for (Double x1 : noRange.getIterable(300)) {
 					for (Double x2 : noRange.getIterable(300)) {
-						network.reset();
-						network.getInputLayer().getNeurons().get(0).setInput(x1);
-						network.getInputLayer().getNeurons().get(1).setInput(x2);
-						network.calculate();
+						// Durchlaufen lassen, null weil keine Backpropagation
+						network.run(new double[] { x1, x2 }, null);
+
+						// nur ein output, deshalb können wir diese funktion
+						// benutzen
 						double out = network.getSingleOutput();
-						// double out2 =
-						// network.getOutputLayer().getNeurons().get(1).getOutput();
-						// System.out.println(out);
-						if (out > 0) {// && out2 < 0) {
+						if (out > 0) {
 							networkC1DataTmp[0][c1] = x1;
 							networkC1DataTmp[1][c1++] = x2;
-						} else if (out < 0) { // && out2 > 0) {
+						} else if (out < 0) {
 							networkC2DataTmp[0][c2] = x1;
 							networkC2DataTmp[1][c2++] = x2;
 						}
@@ -115,6 +95,11 @@ public class RBFNetworkTool implements NetworkTool {
 				// Update Visuals
 				Double[][] networkC1Data = new Double[2][c1];
 				Double[][] networkC2Data = new Double[2][c2];
+				// Das wird benötigt, da nur networkC1Data im gegensatz zu
+				// networkC1DataTmp die richtige länge hat, die wir vorher auch
+				// nicht wissen können
+				// Kann man auch anders und schneller lösen, klappt aber so auch
+				// ganz gut :D
 				System.arraycopy(networkC1DataTmp[0], 0, networkC1Data[0], 0, c1);
 				System.arraycopy(networkC1DataTmp[1], 0, networkC1Data[1], 0, c1);
 				System.arraycopy(networkC2DataTmp[0], 0, networkC2Data[0], 0, c2);
@@ -135,10 +120,6 @@ public class RBFNetworkTool implements NetworkTool {
 				plotFrame.setRuns(runsAll + run);
 				plotFrame.repaint();
 				networkFrame.repaint();
-				/*
-				 * try { Thread.sleep(5); } catch (InterruptedException e) {
-				 * e.printStackTrace(); }
-				 */
 			}
 		}
 		if (WITH_GIF)
