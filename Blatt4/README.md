@@ -7,4 +7,10 @@ unter Linux, bzw.
 
 `java -cp "../lib/CI-Library.jar;../lib/commons-math3-3.6.1.jar;../lib/animated-gif-lib-1.2.jar;bin" de.buffalodan.ci.network.Main`
 
-unter Windows ausführen
+unter Windows ausführen.
+
+Das Programm braucht noch 2 Parameter:
+
+\<sigmamethode(1-4)\> - Ich habe 4 verschiedene Methoden implementiert, um die Sigmas zu inititalisieren
+
+\<num rbfs\> Die Anzahl der RBF Units
