@@ -14,3 +14,6 @@ Das Programm braucht noch 2 Parameter:
 \<sigmamethode(1-4)\> - Ich habe 4 verschiedene Methoden implementiert, um die Sigmas zu inititalisieren
 
 \<num rbfs\> Die Anzahl der RBF Units
+
+# Demo
+Es lohnt sich mal auf http://buffalodan.de:8080/CIWebViewer/RBF.jsp zu gehen, dort kann man sich die Ausgabe mit javascript dynamisch rendern lassen
