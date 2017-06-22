@@ -10,7 +10,7 @@ public class Neuron {
 	protected double input = 0;
 	protected double output = 0;
 	protected double delta = 0;
-	protected Type type;
+	protected NeuronType type;
 	protected ActivationFunction activationFunction;
 
 	/**
@@ -24,11 +24,11 @@ public class Neuron {
 	protected ArrayList<Connection> consumerConnections = null;
 
 	public Neuron(double input) {
-		this(Type.INPUT, null);
+		this(NeuronType.INPUT, null);
 		this.input = input;
 	}
 
-	public Neuron(Type type, ActivationFunction activationFunction) {
+	public Neuron(NeuronType type, ActivationFunction activationFunction) {
 		this.activationFunction = activationFunction;
 		this.type = type;
 		switch (type) {
@@ -54,7 +54,7 @@ public class Neuron {
 	}
 
 	public void pull() {
-		if (type == Type.INPUT) {
+		if (type == NeuronType.INPUT) {
 			// do nothing
 		} else {
 			for (Connection c : producerConnections) {
@@ -70,7 +70,7 @@ public class Neuron {
 	}
 	
 	public void updateWeights(double learningRate) {
-		if (type == Type.INPUT) return;
+		if (type == NeuronType.INPUT) return;
 		for (Connection connection : producerConnections) {
 			double inputFromProducer = connection.getProducer().getOutput();
 			double newWeight = connection.getWeight() + learningRate * delta * inputFromProducer;
@@ -85,9 +85,9 @@ public class Neuron {
 	public void calcDelta(double expected) {
 		double error = 0;
 		// Inputneuronen berechnen kein Delta!
-		if (type == Type.INPUT) {
+		if (type == NeuronType.INPUT) {
 			return;
-		} else if (type == Type.OUTPUT) {
+		} else if (type == NeuronType.OUTPUT) {
 			error = (expected - output);
 		} else {
 			for (Connection connection : consumerConnections) {
@@ -102,7 +102,7 @@ public class Neuron {
 	}
 
 	public void produce() {
-		if (type == Type.INPUT) {
+		if (type == NeuronType.INPUT) {
 			output = input;
 		} else {
 			output = activationFunction.calculate(input);
@@ -145,22 +145,18 @@ public class Neuron {
 		this.consumerConnections = consumerConnections;
 	}
 
-	public Type getType() {
+	public NeuronType getType() {
 		return type;
 	}
 
-	public void setType(Type type) {
+	public void setType(NeuronType type) {
 		this.type = type;
 	}
 
 	public void reset() {
 		output = 0;
-		if (type != Type.INPUT)
+		if (type != NeuronType.INPUT)
 			input = 0;
-	}
-
-	public enum Type {
-		INPUT, OUTPUT, HIDDEN;
 	}
 
 }

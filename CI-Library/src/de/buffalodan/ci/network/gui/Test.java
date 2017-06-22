@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import de.buffalodan.ci.network.ActivationFunction;
 import de.buffalodan.ci.network.Network;
+import de.buffalodan.ci.network.NeuronType;
 import de.buffalodan.ci.network.Range;
 import de.buffalodan.ci.network.Function;
 import de.buffalodan.ci.network.Layer;
-import de.buffalodan.ci.network.Neuron.Type;
 
 public class Test {
 
@@ -15,9 +15,9 @@ public class Test {
 		ArrayList<Layer> layers = new ArrayList<>();
 		Layer inputLayer = new Layer(0);
 		inputLayer.addBias();
-		Layer hiddenLayer = new Layer(10, Type.HIDDEN, ActivationFunction.FERMI);
+		Layer hiddenLayer = new Layer(10, NeuronType.HIDDEN, ActivationFunction.FERMI);
 		hiddenLayer.addBias();
-		Layer outputLayer = new Layer(1, Type.OUTPUT, ActivationFunction.LINEAR);
+		Layer outputLayer = new Layer(1, NeuronType.OUTPUT, ActivationFunction.LINEAR);
 		layers.add(inputLayer);
 		layers.add(hiddenLayer);
 		layers.add(outputLayer);

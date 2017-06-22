@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import de.buffalodan.ci.network.Point2d;
-import de.buffalodan.ci.network.gui.PlotPanel.PlotType;
+
 import javax.swing.JLabel;
 
 @SuppressWarnings("serial")

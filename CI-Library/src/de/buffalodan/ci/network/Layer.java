@@ -2,8 +2,6 @@ package de.buffalodan.ci.network;
 
 import java.util.ArrayList;
 
-import de.buffalodan.ci.network.Neuron.Type;
-
 public class Layer {
 
 	private ArrayList<Neuron> neurons;
@@ -15,7 +13,7 @@ public class Layer {
 		this.neurons.add(n);
 	}
 
-	public Layer(int neurons, Type type, ActivationFunction activationFunction) {
+	public Layer(int neurons, NeuronType type, ActivationFunction activationFunction) {
 		this.neurons = new ArrayList<>();
 		for (int i = 0; i < neurons; i++) {
 			Neuron n = new Neuron(type, activationFunction);

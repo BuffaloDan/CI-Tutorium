@@ -26,11 +26,11 @@ import de.buffalodan.ci.network.Connection;
 import de.buffalodan.ci.network.Layer;
 import de.buffalodan.ci.network.Network;
 import de.buffalodan.ci.network.Neuron;
+import de.buffalodan.ci.network.NeuronType;
 import de.buffalodan.ci.network.RBFNeuron;
 import de.buffalodan.ci.network.Range;
-import de.buffalodan.ci.network.Neuron.Type;
 import de.buffalodan.ci.network.gui.PlotPanel;
-import de.buffalodan.ci.network.gui.PlotPanel.PlotType;
+import de.buffalodan.ci.network.gui.PlotType;
 
 /**
  * Servlet implementation class RBFWebViewer
@@ -168,7 +168,7 @@ public class RBFWebViewer extends HttpServlet {
 
 		Layer hiddenLayer = new Layer(rbfNeurons);
 		hiddenLayer.addBias();
-		Layer outputLayer = new Layer(1, Type.OUTPUT, ActivationFunction.LINEAR);
+		Layer outputLayer = new Layer(1, NeuronType.OUTPUT, ActivationFunction.LINEAR);
 
 		layers.add(inputLayer);
 		layers.add(hiddenLayer);

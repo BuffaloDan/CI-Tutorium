@@ -3,7 +3,6 @@ package de.buffalodan.ci.network;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import de.buffalodan.ci.network.Neuron.Type;
 import de.buffalodan.ci.network.gui.FFNetworkTool;
 
 public class Main {
@@ -14,9 +13,9 @@ public class Main {
 		ArrayList<Layer> layers = new ArrayList<>();
 		Layer inputLayer = new Layer(0);
 		inputLayer.addBias();
-		Layer hiddenLayer = new Layer(10, Type.HIDDEN, ActivationFunction.FERMI);
+		Layer hiddenLayer = new Layer(10, NeuronType.HIDDEN, ActivationFunction.FERMI);
 		hiddenLayer.addBias();
-		Layer outputLayer = new Layer(1, Type.OUTPUT, ActivationFunction.LINEAR);
+		Layer outputLayer = new Layer(1, NeuronType.OUTPUT, ActivationFunction.LINEAR);
 		layers.add(inputLayer);
 		layers.add(hiddenLayer);
 		layers.add(outputLayer);

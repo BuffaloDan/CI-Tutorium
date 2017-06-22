@@ -252,8 +252,4 @@ public class PlotPanel extends JPanel {
 		}
 		g2d.setColor(Color.BLACK);
 	}
-
-	public enum PlotType {
-		LINE, DOT, SQUARE, CROSS;
-	}
 }

@@ -5,13 +5,13 @@ public class RBFNeuron extends Neuron {
 	private double sigma;
 
 	public RBFNeuron(double sigma) {
-		super(Type.HIDDEN, ActivationFunction.createGaussian(sigma));
+		super(NeuronType.HIDDEN, ActivationFunction.createGaussian(sigma));
 		this.sigma = sigma;
 	}
 
 	@Override
 	public void pull() {
-		if (type == Type.INPUT) {
+		if (type == NeuronType.INPUT) {
 			// do nothing
 		} else {
 			for (Connection c : producerConnections) {

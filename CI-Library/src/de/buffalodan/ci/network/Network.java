@@ -3,8 +3,6 @@ package de.buffalodan.ci.network;
 import java.util.ArrayList;
 import java.util.Random;
 
-import de.buffalodan.ci.network.Neuron.Type;
-
 public class Network {
 
 	private ArrayList<Layer> layers;
@@ -148,7 +146,7 @@ public class Network {
 			Layer next = layers.get(i + 1);
 			for (Neuron n : layer.getNeurons()) {
 				for (Neuron n2 : next.getNeurons()) {
-					if (n2.getType() == Type.INPUT)
+					if (n2.getType() == NeuronType.INPUT)
 						continue;
 					double weight = r.nextDouble() - 0.5; // testWeights[j];
 					Connection connection = new Connection(n, n2, weight);
@@ -163,10 +161,6 @@ public class Network {
 		for (Layer layer : layers) {
 			layer.reset();
 		}
-	}
-
-	public enum PropagationMode {
-		ALL, OUTPUT;
 	}
 
 }

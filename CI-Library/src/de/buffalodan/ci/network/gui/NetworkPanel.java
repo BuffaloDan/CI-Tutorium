@@ -18,7 +18,7 @@ import de.buffalodan.ci.network.Connection;
 import de.buffalodan.ci.network.Network;
 import de.buffalodan.ci.network.Layer;
 import de.buffalodan.ci.network.Neuron;
-import de.buffalodan.ci.network.Neuron.Type;
+import de.buffalodan.ci.network.NeuronType;
 
 @SuppressWarnings("serial")
 public class NetworkPanel extends JPanel {
@@ -144,7 +144,7 @@ public class NetworkPanel extends JPanel {
 	}
 
 	private void drawConnections(Graphics2D g2d, Neuron neuron, int layer) {
-		if (neuron.getType() == Type.INPUT) {
+		if (neuron.getType() == NeuronType.INPUT) {
 			// Hat keine Connections nach hinten
 			return;
 		}

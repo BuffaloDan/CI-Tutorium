@@ -11,7 +11,7 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 
 import de.buffalodan.ci.network.gui.PlotFrame;
-import de.buffalodan.ci.network.gui.PlotPanel.PlotType;
+import de.buffalodan.ci.network.gui.PlotType;
 
 public class Main {
 

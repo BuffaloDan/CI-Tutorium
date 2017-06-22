@@ -9,10 +9,8 @@ import org.apache.commons.math3.ml.clustering.CentroidCluster;
 import org.apache.commons.math3.ml.clustering.DoublePoint;
 import org.apache.commons.math3.ml.clustering.KMeansPlusPlusClusterer;
 
-import de.buffalodan.ci.network.Network.PropagationMode;
-import de.buffalodan.ci.network.Neuron.Type;
 import de.buffalodan.ci.network.gui.PlotFrame;
-import de.buffalodan.ci.network.gui.PlotPanel.PlotType;
+import de.buffalodan.ci.network.gui.PlotType;
 
 public class Main {
 
@@ -195,7 +193,7 @@ public class Main {
 
 		Layer hiddenLayer = new Layer(rbfNeurons);
 		hiddenLayer.addBias();
-		Layer outputLayer = new Layer(1, Type.OUTPUT, ActivationFunction.LINEAR);
+		Layer outputLayer = new Layer(1, NeuronType.OUTPUT, ActivationFunction.LINEAR);
 
 		layers.add(inputLayer);
 		layers.add(hiddenLayer);

@@ -13,8 +13,9 @@ import de.buffalodan.ci.network.Connection;
 import de.buffalodan.ci.network.Layer;
 import de.buffalodan.ci.network.Network;
 import de.buffalodan.ci.network.Neuron;
+import de.buffalodan.ci.network.NeuronType;
 import de.buffalodan.ci.network.RBFNeuron;
-import de.buffalodan.ci.network.Neuron.Type;
+import de.buffalodan.ci.network.PropagationMode;
 import de.buffalodan.ci.web.NetworkThread.TrainingData;
 
 public class NetworkManager {
@@ -186,7 +187,7 @@ public class NetworkManager {
 
 		Layer hiddenLayer = new Layer(rbfNeurons);
 		hiddenLayer.addBias();
-		Layer outputLayer = new Layer(1, Type.OUTPUT, ActivationFunction.LINEAR);
+		Layer outputLayer = new Layer(1, NeuronType.OUTPUT, ActivationFunction.LINEAR);
 
 		layers.add(inputLayer);
 		layers.add(hiddenLayer);
@@ -194,7 +195,7 @@ public class NetworkManager {
 
 		Network network = new Network(layers);
 		network.setLearningRate(0.01d);
-		network.setPropagationMode(Network.PropagationMode.OUTPUT);
+		network.setPropagationMode(PropagationMode.OUTPUT);
 
 		// Update RBF "Gewichte"
 		for (int i = 0; i < rbfs; i++) {
