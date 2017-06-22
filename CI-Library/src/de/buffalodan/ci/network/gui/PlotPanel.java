@@ -7,8 +7,11 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JPanel;
+
+import de.buffalodan.ci.network.Point2d;
 
 @SuppressWarnings("serial")
 public class PlotPanel extends JPanel {
@@ -16,11 +19,13 @@ public class PlotPanel extends JPanel {
 	private Dimension fixedSize = null;
 
 	// Das sollte man mal in eine Plot Class auslagern...
-	private ArrayList<Double[][]> plots;
+	private ArrayList<ArrayList<Point2d>> plots;
 	private ArrayList<PlotType> types;
 	private ArrayList<Color> colors;
 	private ArrayList<Boolean> render;
 	private int coordSystemRenderOrder = 0;
+
+	public HashMap<Integer, Integer> sizeOverride = new HashMap<>();
 
 	private Color backgroundColor;
 
@@ -61,6 +66,14 @@ public class PlotPanel extends JPanel {
 	}
 
 	public void updatePlotData(Double[][] data, int index, boolean updateBounds) {
+		ArrayList<Point2d> d = convertData(data);
+		plots.set(index, d);
+		if (updateBounds)
+			updateBounds(d);
+		repaint();
+	}
+
+	public void updatePlotData(ArrayList<Point2d> data, int index, boolean updateBounds) {
 		plots.set(index, data);
 		if (updateBounds)
 			updateBounds(data);
@@ -71,33 +84,40 @@ public class PlotPanel extends JPanel {
 		updatePlotData(convertData(data), index, updateBounds);
 	}
 
-	public Double[][] convertData(double[][] data) {
-		Double[][] newData = new Double[2][data[0].length];
+	public ArrayList<Point2d> convertData(double[][] data) {
+		ArrayList<Point2d> newData = new ArrayList<>();
 		for (int i = 0; i < data[0].length; i++) {
 			double x = data[0][i];
 			double y = data[1][i];
-			newData[0][i] = x;
-			newData[1][i] = y;
+			newData.add(new Point2d(x, y));
 		}
 		return newData;
 	}
 
-	private void updateBounds(Double[][] data) {
+	public ArrayList<Point2d> convertData(Double[][] data) {
+		ArrayList<Point2d> newData = new ArrayList<>();
 		for (int i = 0; i < data[0].length; i++) {
 			double x = data[0][i];
 			double y = data[1][i];
-			if (y < minY)
-				minY = Math.floor(y);
-			if (y > maxY)
-				maxY = Math.ceil(y);
-			if (x < minX)
-				minX = Math.floor(x);
-			if (x > maxX)
-				maxX = Math.ceil(x);
+			newData.add(new Point2d(x, y));
+		}
+		return newData;
+	}
+
+	private void updateBounds(ArrayList<Point2d> data) {
+		for (Point2d p : data) {
+			if (p.y < minY)
+				minY = Math.floor(p.y);
+			if (p.y > maxY)
+				maxY = Math.ceil(p.y);
+			if (p.x < minX)
+				minX = Math.floor(p.x);
+			if (p.x > maxX)
+				maxX = Math.ceil(p.x);
 		}
 	}
 
-	public void addPlot(Double[][] data, Color color, PlotType type) {
+	public void addPlot(ArrayList<Point2d> data, Color color, PlotType type) {
 		updateBounds(data);
 		plots.add(data);
 		colors.add(color);
@@ -105,14 +125,28 @@ public class PlotPanel extends JPanel {
 		types.add(type);
 	}
 
+	public void addPlot(Double[][] data, Color color, PlotType type) {
+		ArrayList<Point2d> d = convertData(data);
+		updateBounds(d);
+		plots.add(d);
+		colors.add(color);
+		render.add(true);
+		types.add(type);
+	}
+
 	public void addPlot(double[][] data, Color color, PlotType type) {
-		addPlot(convertData(data), color, type);
+		ArrayList<Point2d> d = convertData(data);
+		updateBounds(d);
+		plots.add(d);
+		colors.add(color);
+		render.add(true);
+		types.add(type);
 	}
 
 	public void setFixedSize(Dimension fixedSize) {
 		this.fixedSize = fixedSize;
 	}
-	
+
 	public void renderToImage(BufferedImage bi) {
 		paintComponent(bi.getGraphics());
 	}
@@ -120,7 +154,7 @@ public class PlotPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
-		Dimension coordSize = fixedSize==null?getSize():fixedSize;
+		Dimension coordSize = fixedSize == null ? getSize() : fixedSize;
 
 		// Damit die Kreise schön rund werden :D
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -150,7 +184,7 @@ public class PlotPanel extends JPanel {
 
 		// Plot
 		int j = 0;
-		for (Double[][] data : plots) {
+		for (ArrayList<Point2d> data : plots) {
 			if (j == coordSystemRenderOrder) {
 				g2d.setColor(Color.BLACK);
 				// Draw CoordSystem
@@ -158,25 +192,28 @@ public class PlotPanel extends JPanel {
 				g2d.drawLine(x0, 0, x0, coordSize.width - 1);
 			}
 			if (render.get(j)) {
-				Double[] xValues = data[0];
-				Double[] yValues = data[1];
 				int size;
 				switch (types.get(j)) {
 				case LINE:
 					g2d.setColor(colors.get(j));
-					for (int i = 0; i < xValues.length - 1; i++) {
-						int x1 = (int) (xValues[i] * stepX + x0);
-						int y1 = (int) (y0 - yValues[i] * stepY);
-						int x2 = (int) (xValues[i + 1] * stepX + x0);
-						int y2 = (int) (y0 - yValues[i + 1] * stepY);
+					for (int i = 0; i < data.size() - 1; i++) {
+						Point2d p1 = data.get(i);
+						Point2d p2 = data.get(i + 1);
+						int x1 = (int) (p1.x * stepX + x0);
+						int y1 = (int) (y0 - p1.y * stepY);
+						int x2 = (int) (p2.x * stepX + x0);
+						int y2 = (int) (y0 - p2.y * stepY);
 						g2d.drawLine(x1, y1, x2, y2);
 					}
 					break;
 				case DOT:
 					size = DOT_SIZE;
-					for (int i = 0; i < xValues.length; i++) {
-						int x = (int) (xValues[i] * stepX + x0);
-						int y = (int) (y0 - yValues[i] * stepY);
+					if (sizeOverride.get(j) != null) {
+						size = sizeOverride.get(j);
+					}
+					for (Point2d p : data) {
+						int x = (int) (p.x * stepX + x0);
+						int y = (int) (y0 - p.y * stepY);
 						g2d.setColor(Color.WHITE);
 						g2d.fillOval(x - size - 1, y - size - 1, size * 2 + 2, size * 2 + 2);
 						g2d.setColor(colors.get(j));
@@ -185,9 +222,12 @@ public class PlotPanel extends JPanel {
 					break;
 				case SQUARE:
 					size = SQUARE_SIZE;
-					for (int i = 0; i < xValues.length; i++) {
-						int x = (int) (xValues[i] * stepX + x0);
-						int y = (int) (y0 - yValues[i] * stepY);
+					if (sizeOverride.get(j) != null) {
+						size = sizeOverride.get(j);
+					}
+					for (Point2d p : data) {
+						int x = (int) (p.x * stepX + x0);
+						int y = (int) (y0 - p.y * stepY);
 						g2d.setColor(Color.WHITE);
 						g2d.fillRect(x - size - 1, y - size - 1, size * 2 + 2, size * 2 + 2);
 						g2d.setColor(colors.get(j));
@@ -196,9 +236,12 @@ public class PlotPanel extends JPanel {
 					break;
 				case CROSS:
 					size = 5;
-					for (int i = 0; i < xValues.length; i++) {
-						int x = (int) (xValues[i] * stepX + x0);
-						int y = (int) (y0 - yValues[i] * stepY);
+					if (sizeOverride.get(j) != null) {
+						size = sizeOverride.get(j);
+					}
+					for (Point2d p : data) {
+						int x = (int) (p.x * stepX + x0);
+						int y = (int) (y0 - p.y * stepY);
 						g2d.setColor(colors.get(j));
 						g2d.drawLine(x - 2, y - 2, x + 2, y + 2);
 						g2d.drawLine(x - 2, y + 2, x + 2, y - 2);

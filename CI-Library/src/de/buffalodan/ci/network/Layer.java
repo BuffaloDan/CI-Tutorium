@@ -56,6 +56,9 @@ public class Layer {
 	public void pullAndProduce() {
 		for (Neuron neuron : neurons) {
 			neuron.pull();
+		}
+		for (Neuron neuron : neurons) {
+			// für recurrente Netze sind das 2 durchläufe
 			neuron.produce();
 		}
 	}

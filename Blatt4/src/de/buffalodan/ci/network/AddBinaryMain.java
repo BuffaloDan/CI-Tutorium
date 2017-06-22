@@ -17,6 +17,7 @@ public class AddBinaryMain {
 		RecurrentNetwork network = new RecurrentNetwork(layers);
 		AddBinaryNetworkTool tool = new AddBinaryNetworkTool(network);
 		tool.start();
+		tool.run(30000);
 	}
 
 }

@@ -4,12 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import de.buffalodan.ci.network.Point2d;
 import de.buffalodan.ci.network.gui.PlotPanel.PlotType;
 import javax.swing.JLabel;
 
@@ -58,7 +60,25 @@ public class PlotFrame extends JFrame {
 	}
 
 	public void addPlot(double[][] data, Color color, PlotType type, String plotName, int index) {
-		addPlot(plotPanel.convertData(data), color, type, plotName, index);
+		plotPanel.addPlot(data, color, type);
+		JCheckBox plot = new JCheckBox(plotName);
+		plot.setSelected(true);
+		plot.setForeground(color);
+		plot.addActionListener(new RenderActionListener(index, plot));
+		south.add(plot);
+		south.validate();
+		repaint();
+	}
+	
+	public void addPlot(ArrayList<Point2d> data, Color color, PlotType type, String plotName, int index) {
+		plotPanel.addPlot(data, color, type);
+		JCheckBox plot = new JCheckBox(plotName);
+		plot.setSelected(true);
+		plot.setForeground(color);
+		plot.addActionListener(new RenderActionListener(index, plot));
+		south.add(plot);
+		south.validate();
+		repaint();
 	}
 
 	public PlotPanel getPlotPanel() {

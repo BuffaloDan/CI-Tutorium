@@ -126,6 +126,8 @@ public class Network {
 				} else {
 					neuron.calcDelta(0);
 				}
+			}
+			for (Neuron neuron : layers.get(i).getNeurons()) {
 				neuron.updateWeights(learningRate);
 			}
 		}
@@ -139,7 +141,7 @@ public class Network {
 		}
 	}
 
-	private void buildConnections() {
+	protected void buildConnections() {
 		Random r = new Random(System.currentTimeMillis());
 		for (int i = 0; i < layers.size() - 1; i++) {
 			Layer layer = layers.get(i);

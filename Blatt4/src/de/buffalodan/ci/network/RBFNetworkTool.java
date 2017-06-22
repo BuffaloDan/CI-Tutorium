@@ -24,7 +24,7 @@ public class RBFNetworkTool implements NetworkTool {
 	private PlotFrame plotFrame;
 	private NetworkFrame networkFrame;
 
-	private static final boolean WITH_GIF = true;
+	private static final boolean WITH_GIF = false;
 
 	public RBFNetworkTool(Network network) {
 		this.network = network;

@@ -125,7 +125,8 @@ public class Main {
 		double[] c2x2 = new double[100];
 
 		// Die
-		ArrayList<DoublePoint> points = new ArrayList<>();
+		ArrayList<DoublePoint> pointsc1 = new ArrayList<>();
+		ArrayList<DoublePoint> pointsc2 = new ArrayList<>();
 		for (int i = 0; i < 100; i++) {
 			// u=1,...,100
 			int u = i + 1;
@@ -133,8 +134,8 @@ public class Main {
 			c1x2[i] = c1x2(u);
 			c2x1[i] = c2x1(u);
 			c2x2[i] = c2x2(u);
-			points.add(new DoublePoint(new double[] { c1x1[i], c1x2[i] }));
-			points.add(new DoublePoint(new double[] { c2x1[i], c2x2[i] }));
+			pointsc1.add(new DoublePoint(new double[] { c1x1[i], c1x2[i] }));
+			pointsc2.add(new DoublePoint(new double[] { c2x1[i], c2x2[i] }));
 		}
 
 		dataC1[0] = c1x1;
@@ -143,9 +144,19 @@ public class Main {
 		dataC2[1] = c2x2;
 
 		// Die Center für die RBF-Units mit K-Means berechnen
-		KMeansPlusPlusClusterer<DoublePoint> clusterer = new KMeansPlusPlusClusterer<>(rbfs, 10000);
-		List<CentroidCluster<DoublePoint>> results = clusterer.cluster(points);
+		KMeansPlusPlusClusterer<DoublePoint> clusterer = new KMeansPlusPlusClusterer<>(rbfs / 2, 10000);
+		List<CentroidCluster<DoublePoint>> results = clusterer.cluster(pointsc1);
 		int cl = 0;
+		// Random r = new Random(System.currentTimeMillis());
+		for (CentroidCluster<DoublePoint> cluster : results) {
+			clusterData[0][cl] = cluster.getCenter().getPoint()[0];
+			clusterData[1][cl] = cluster.getCenter().getPoint()[1];
+			cl++;
+			// System.out.println(cluster.getCenter());
+		}
+		// Die Center für die RBF-Units mit K-Means berechnen
+		clusterer = new KMeansPlusPlusClusterer<>(rbfs / 2, 10000);
+		results = clusterer.cluster(pointsc2);
 		// Random r = new Random(System.currentTimeMillis());
 		for (CentroidCluster<DoublePoint> cluster : results) {
 			clusterData[0][cl] = cluster.getCenter().getPoint()[0];
@@ -172,8 +183,8 @@ public class Main {
 			sigmaMethod2(rbfNeurons, rbfs, clusterData);
 			break;
 		case 3:
-			 sigmaMethod3(rbfNeurons, rbfs);
-			 break;
+			sigmaMethod3(rbfNeurons, rbfs);
+			break;
 		case 4:
 			sigmaMethod4(rbfNeurons, rbfs, clusterData, dataC1, dataC2);
 			break;
@@ -198,8 +209,8 @@ public class Main {
 			RBFNeuron n = rbfNeurons.get(i);
 			Connection x1Conn = n.getProducerConnections().get(0);
 			Connection x2Conn = n.getProducerConnections().get(1);
-			double x1 = results.get(i).getCenter().getPoint()[0];
-			double x2 = results.get(i).getCenter().getPoint()[1];
+			double x1 = clusterData[0][i];
+			double x2 = clusterData[1][i];
 			x1Conn.setWeight(x1);
 			x2Conn.setWeight(x2);
 		}
@@ -219,8 +230,9 @@ public class Main {
 		RBFNetworkTool tool = new RBFNetworkTool(network);
 		tool.init(plotFrame, c1x1, c1x2, c2x1, c2x2);
 		tool.start();
-		
-		// Die eigentliche logik, die das Netzwerk lernen lässt ist in RBFNetworkTool
+
+		// Die eigentliche logik, die das Netzwerk lernen lässt ist in
+		// RBFNetworkTool
 	}
 
 	public static void main(String[] args) {
