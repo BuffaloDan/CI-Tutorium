@@ -29,24 +29,35 @@ public class Main {
 	}
 
 	private static double expReachFunction(double distSquared, int t) {
-		return Math.exp(-distSquared / (2 * Math.pow(expDecay(t), 2)));
+		return Math.exp(-distSquared / (2 * Math.pow(sigma(t, ITERATIONS), 2)));
+	}
+	
+	public static double sigma(int currentIteration, int finalIteration){
+		double start = 0.9;
+		double end = 0.1;
+		return start*Math.pow((end/start),((double)currentIteration/finalIteration));
 	}
 
-	public static Point2d getWinner(Point2d p, ArrayList<Point2d> units) {
+	public static int getWinner(Point2d p, ArrayList<Point2d> units) {
 		Point2d winner = null;
 		double dist = 0;
+		int index = 0;
+		int i = 0;
 		for (Point2d unit : units) {
 			if (winner == null) {
+				index = i;
 				winner = unit;
 				dist = winner.getDistanceSquared(p);
 			} else {
 				if (unit.getDistance(p) < dist) {
+					index = i;
 					winner = unit;
 					dist = winner.getDistanceSquared(p);
 				}
 			}
+			i++;
 		}
-		return winner;
+		return index;
 	}
 
 	private static double xi(double u, Random r) {
@@ -81,7 +92,7 @@ public class Main {
 
 		ArrayList<Point2d> winners = new ArrayList<>();
 		for (Point2d p : pointsTestdata) {
-			Point2d winner = getWinner(p, units);
+			Point2d winner = units.get(getWinner(p, units));
 			winners.add(winner);
 		}
 
@@ -102,13 +113,14 @@ public class Main {
 			Collections.shuffle(randomList);
 			for (int j = 0; j < points.size(); j++) {
 				Point2d p = points.get(j);
-				Point2d winner = getWinner(p, units);
+				int winner = getWinner(p, units);
+				int u = 0;
 				for (Point2d unit : units) {
 					Point2d delta = p.subNew(unit);
-					double dx = expDecayLR(i) * expReachFunction(Math.pow(unit.x - winner.x, 2), i);
-					double dy = expDecayLR(i) * expReachFunction(Math.pow(unit.y - winner.y, 2), i);
-					unit.x += dx * delta.x;
-					unit.y += dy * delta.y;
+					double d = LEARN_RATE * expReachFunction(Math.pow(u - winner, 2), i);
+					unit.x += d * delta.x;
+					unit.y += d * delta.y;
+					u++;
 				}
 			}
 			if (i % 1 == 0) {
