@@ -1,5 +1,5 @@
 # Build Instructions
-## Für Tutor
+## Für den Tutor
 In dem Ordner Abgabe in jedem Projekt befindet sich eine tutor-src.zip datei mit allen Source Dateien in einem Ordner, damit ist es sehr leicht alles zu kompilieren und auszuführen. Eine build.sh und run.sh sind trotzdem dabei, falls externe Libs benutzt werden
 
 Es wird die ganze CI-Library reinkopiert, es werden also viel mehr Klassen da sein, als benötigt werden. Wichtig ist meinstens jedoch nur die Main.java
