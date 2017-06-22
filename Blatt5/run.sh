@@ -1,0 +1,1 @@
+java -cp "../lib/CI-Library.jar:./bin" de.buffalodan.ci.network.Main
