@@ -17,10 +17,11 @@ public class Main {
 
 	// 0 = Linear
 	// 1 = Exponential
+	// Klappen beide gut
 	private static int MODE = 0;
 
 	private final static double LEARN_RATE = 0.01d;
-	private final static int ITERATIONS = 30001;
+	private final static int ITERATIONS = 7001;
 
 	private static double tau0 = 0.01d;
 	private static double tau = ITERATIONS / tau0;
@@ -32,6 +33,14 @@ public class Main {
 	private static double expDecayLR(int t) {
 		return LEARN_RATE * Math.exp(-t / tau);
 	}
+	
+	//Besser
+	// Sorgt für einen Stetigen Abfall der Reichweite
+	public static double sigma(int currentIteration, int finalIteration) {
+		double start = 5;
+		double end = 0.05;
+		return start * Math.pow((end / start), ((double) currentIteration / finalIteration));
+	}
 
 	private static double expReachFunction(double distSquared, int t) {
 		double sigma = sigma(t, ITERATIONS);
@@ -41,12 +50,6 @@ public class Main {
 	private static double linReachFunction(int dist, double r) {
 		if (dist>=r) return 0;
 		return 1-dist/r;
-	}
-
-	public static double sigma(int currentIteration, int finalIteration) {
-		double start = 5;
-		double end = 0.01;
-		return start * Math.pow((end / start), ((double) currentIteration / finalIteration));
 	}
 
 	public static int getWinner(Point2d p, ArrayList<Point2d> units) {
@@ -84,6 +87,7 @@ public class Main {
 		ArrayList<Point2d> pointsTestdata = new ArrayList<>();
 		Random r = new Random();
 		ArrayList<Integer> randomList = new ArrayList<>();
+		// Unsere Datenpunkte
 		for (int i = 0; i <= 1000; i++) {
 			randomList.add(i);
 			double u = 0.02d * i;
@@ -92,17 +96,23 @@ public class Main {
 			Point2d p = new Point2d(x, y);
 			points.add(p);
 			if (i % 100 == 0) {
+				// A2
 				pointsTestdata.add(p);
 			}
 		}
+		// Mit der Methode wird keine Unit doppelt bestimmt
 		Collections.shuffle(randomList);
 		ArrayList<Point2d> units = new ArrayList<>();
+		ArrayList<Integer> randomList2 = new ArrayList<>();
+		// Units random aus Datenmenge auswählen
 		for (int i = 0; i < 100; i++) {
 			units.add(new Point2d(points.get(randomList.get(i))));
+			randomList2.add(i);
 		}
 
 		ArrayList<Point2d> winners = new ArrayList<>();
 		for (Point2d p : pointsTestdata) {
+			// A3
 			Point2d winner = units.get(getWinner(p, units));
 			winners.add(winner);
 		}
@@ -118,6 +128,7 @@ public class Main {
 
 		pf.setVisible(true);
 		
+		// Bild für A1-A3 speichern
 		BufferedImage bi = new BufferedImage(pf.getPlotPanel().getWidth(), pf.getPlotPanel().getHeight(), BufferedImage.TYPE_INT_RGB);
 		pf.getPlotPanel().renderToImage(bi);
 		try {
@@ -132,20 +143,20 @@ public class Main {
 			// Random Points
 			Collections.shuffle(randomList);
 			for (int j = 0; j < points.size(); j++) {
-				Point2d p = points.get(j);
+				Point2d p = points.get(randomList.get(j));
 				int winner = getWinner(p, units);
-				int u = 0;
-				for (Point2d unit : units) {
+				Collections.shuffle(randomList2);
+				for (int u = 0;u<units.size();u++) {
+					Point2d unit = units.get(randomList2.get(u));
 					Point2d deltaP = p.subNew(unit);
 					double delta;
 					if (MODE == 0) {
-						delta = LEARN_RATE * linReachFunction(Math.abs(u- winner), Math.ceil(5-5d*(((double) i)/ITERATIONS)));
+						delta = LEARN_RATE * linReachFunction(Math.abs(randomList2.get(u)- winner), Math.ceil(5-5d*(((double) i)/ITERATIONS)));
 					} else {
-						delta = LEARN_RATE * expReachFunction(Math.pow(winner - u, 2), i);
+						delta = LEARN_RATE * expReachFunction(Math.pow(winner - randomList2.get(u), 2), i);
 					}
 					unit.x += delta * deltaP.x;
 					unit.y += delta * deltaP.y;
-					u++;
 				}
 			}
 			if (i % 100 == 0) {
