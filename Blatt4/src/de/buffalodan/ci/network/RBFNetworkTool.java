@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.imageio.ImageIO;
 
@@ -48,7 +50,12 @@ public class RBFNetworkTool implements NetworkTool {
 			gif.start("output.gif");
 			gif.setFrameRate(15);
 		}
+		ArrayList<Integer> randomList = new ArrayList<>();
+		for (int i=0;i<100;i++) {
+			randomList.add(i);
+		}
 		for (int run = 0; run < runs; run++) {
+			Collections.shuffle(randomList);
 			for (int i = 0; i < 100; i++) {
 				network.run(new double[] { c1x1[i], c1x2[i] }, new double[] { 1 });
 				network.run(new double[] { c2x1[i], c2x2[i] }, new double[] { -1 });

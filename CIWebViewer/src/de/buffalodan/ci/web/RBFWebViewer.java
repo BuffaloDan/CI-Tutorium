@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -56,7 +57,7 @@ public class RBFWebViewer extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html");
 		PrintWriter pw = response.getWriter();
-		if (System.currentTimeMillis()-lastRun < 10000) {
+		if (System.currentTimeMillis() - lastRun < 10000) {
 			pw.print("Sorry, nur eine Anfrage alle 10 Sekunden erlaubt, sonst überlastet der Server!");
 			return;
 		}
@@ -101,16 +102,19 @@ public class RBFWebViewer extends HttpServlet {
 		double[] c2x1 = new double[100];
 		double[] c2x2 = new double[100];
 
-		ArrayList<DoublePoint> points = new ArrayList<>();
+		ArrayList<DoublePoint> pointsc1 = new ArrayList<>();
+		ArrayList<DoublePoint> pointsc2 = new ArrayList<>();
+		ArrayList<Integer> randomList = new ArrayList<>();
 		for (int i = 0; i < 100; i++) {
+			randomList.add(i);
 			// u=1,...,100
 			int u = i + 1;
 			c1x1[i] = c1x1(u);
 			c1x2[i] = c1x2(u);
 			c2x1[i] = c2x1(u);
 			c2x2[i] = c2x2(u);
-			points.add(new DoublePoint(new double[] { c1x1[i], c1x2[i] }));
-			points.add(new DoublePoint(new double[] { c2x1[i], c2x2[i] }));
+			pointsc1.add(new DoublePoint(new double[] { c1x1[i], c1x2[i] }));
+			pointsc2.add(new DoublePoint(new double[] { c2x1[i], c2x2[i] }));
 		}
 		// test
 		/*
@@ -128,9 +132,19 @@ public class RBFWebViewer extends HttpServlet {
 		dataC2[1] = c2x2;
 
 		// Die Center für die RBF-Units mit K-Means berechnen
-		KMeansPlusPlusClusterer<DoublePoint> clusterer = new KMeansPlusPlusClusterer<>(rbfs, 10000);
-		List<CentroidCluster<DoublePoint>> results = clusterer.cluster(points);
+		KMeansPlusPlusClusterer<DoublePoint> clusterer = new KMeansPlusPlusClusterer<>(rbfs / 2, 10000);
+		List<CentroidCluster<DoublePoint>> results = clusterer.cluster(pointsc1);
 		int cl = 0;
+		// Random r = new Random(System.currentTimeMillis());
+		for (CentroidCluster<DoublePoint> cluster : results) {
+			clusterData[0][cl] = cluster.getCenter().getPoint()[0];
+			clusterData[1][cl] = cluster.getCenter().getPoint()[1];
+			cl++;
+			// System.out.println(cluster.getCenter());
+		}
+		// Die Center für die RBF-Units mit K-Means berechnen
+		clusterer = new KMeansPlusPlusClusterer<>(rbfs / 2, 10000);
+		results = clusterer.cluster(pointsc2);
 		// Random r = new Random(System.currentTimeMillis());
 		for (CentroidCluster<DoublePoint> cluster : results) {
 			clusterData[0][cl] = cluster.getCenter().getPoint()[0];
@@ -199,10 +213,11 @@ public class RBFWebViewer extends HttpServlet {
 
 		int runs = 5001;
 		for (int run = 0; run < runs; run++) {
+			Collections.shuffle(randomList);
 			for (int i = 0; i < 100; i++) {
 				network.reset();
-				network.getInputLayer().getNeurons().get(0).setInput(c1x1[i]);
-				network.getInputLayer().getNeurons().get(1).setInput(c1x2[i]);
+				network.getInputLayer().getNeurons().get(0).setInput(c1x1[randomList.get(i)]);
+				network.getInputLayer().getNeurons().get(1).setInput(c1x2[randomList.get(i)]);
 				network.calculate();
 				// System.out.println(c1x1[i] + "," + c1x2[i] + ": " +
 				// network.getSingleOutput());
@@ -214,15 +229,15 @@ public class RBFWebViewer extends HttpServlet {
 				// System.out.println(out1+" "+out2);
 
 				network.reset();
-				network.getInputLayer().getNeurons().get(0).setInput(c2x1[i]);
-				network.getInputLayer().getNeurons().get(1).setInput(c2x2[i]);
+				network.getInputLayer().getNeurons().get(0).setInput(c2x1[randomList.get(i)]);
+				network.getInputLayer().getNeurons().get(1).setInput(c2x2[randomList.get(i)]);
 				network.calculate();
 				// System.out.println(c2x1[i] + "," + c2x2[i] + ": " +
 				// network.getSingleOutput());
 				// network.backpropagate(-1);
 				network.backpropagateOutputLayer(new double[] { -1 });
 			}
-			if (run == runs-1) {
+			if (run == runs - 1) {
 				// Network Output für Klasse 1 und 2
 				Double[][] networkC1DataTmp = new Double[2][301 * 301];
 				Double[][] networkC2DataTmp = new Double[2][301 * 301];
@@ -270,8 +285,9 @@ public class RBFWebViewer extends HttpServlet {
 		}
 		BufferedImage bi = new BufferedImage(800, 600, BufferedImage.TYPE_INT_RGB);
 		pp.renderToImage(bi);
-		ImageIO.write(bi, "PNG", new File("/var/tomcat/CI/out.png"));//new File("C:\\Users\\Daniel\\Documents\\Java\\CI\\out.png"));
-		
+		ImageIO.write(bi, "PNG", new File("/var/tomcat/CI/out.png"));// new
+																		// File("C:\\Users\\Daniel\\Documents\\Java\\CI\\out.png"));
+
 		pw.print("<br>Ausgabe nach 5001 Durchläufen:");
 		pw.print("<br><img src=/CIWebViewer/GetImage />");
 		pw.print("<br>Rot=Klasse1 Blau=Klasse2 Schwarz=RBFs");
