@@ -147,6 +147,23 @@ public class PlotPanel extends JPanel {
 		this.fixedSize = fixedSize;
 	}
 
+	@Override
+	public int getWidth() {
+		return (int) (fixedSize==null?super.getWidth():fixedSize.getWidth());
+	}
+
+	@Override
+	public int getHeight() {
+		return (int) (fixedSize==null?super.getHeight():fixedSize.getHeight());
+	}
+	
+	public BufferedImage renderToImage() {
+		BufferedImage bi = new BufferedImage(getWidth(), getHeight(),
+				BufferedImage.TYPE_INT_RGB);
+		renderToImage(bi);
+		return bi;
+	}
+
 	public void renderToImage(BufferedImage bi) {
 		paintComponent(bi.getGraphics());
 	}
