@@ -1,0 +1,11 @@
+Zuerst die Wahrscheinlichkeit davon, dass sich ein Nachkommen nicht geändert hat:
+
+(1-w)^L
+
+Und dann, dass sich kein Nachkommen geändert hat:
+
+((1-w)^L)^N
+
+w=0.04;L=16;N=50
+-->
+((1-0.04)^16)^50 = 6.561 × 10^-15
