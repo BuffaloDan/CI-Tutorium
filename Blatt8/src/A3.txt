@@ -1,0 +1,6 @@
+Baum1 repräsentiert: (1-3)+((4+5)*2) = 16
+Baum2 repräsentiert: ((3/1)*5)-(4+2) = 9
+
+Nach Crossover
+Baum1 repräsentiert: 5+((4+5)*2) = 23
+Baum2 repräsentiert: ((3/1)*(1-3))-(4+2) = -12
