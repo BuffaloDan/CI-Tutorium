@@ -1,0 +1,1 @@
+Die Regel IF Ti IS Z AND Ta IS Z THEN H IS P ist aktiviert

@@ -1,0 +1,2 @@
+Wie bei den Skizzen zu erkennen wird bei Ti und Ta jeweils nur Z aktiviert, da bei Ti(25) genau N=0, Z=1, P=0 und bei Ta(50) genau N=0, Z=1, P=0 gilt
+(Ich war mir nicht sicher, ob N bei 0 oder 1 anfangen soll, 1 erschien mir aber logischer. Wenn man bei 0 anfängt und bei P auch mit 0 aufhört sähe das alles ganz anders aus. War für mich aber bei der Aufgabenstellung nicht genau ersichtlich, wie das gemeint ist. Das gilt auch für die Folgeaufgaben)
